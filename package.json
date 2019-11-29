@@ -1,0 +1,21 @@
+{
+  "name": "augc",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:proshunsuke/augc.git",
+  "author": "proshunsuke <shunsuke0901@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "*",
+    "@babel/preset-env": "*",
+    "@babel/preset-typescript": "*",
+    "@google/clasp": "*",
+    "@types/google-apps-script": "*",
+    "babel-loader": "*",
+    "es3ify-webpack-plugin": "*",
+    "gas-webpack-plugin": "*",
+    "tslint": "*",
+    "webpack": "*",
+    "webpack-cli": "*"
+  }
+}
