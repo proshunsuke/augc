@@ -11,10 +11,11 @@ function testGreeter() {
     Logger.log(greeter(user)+test.test());
 }
 
-global.onOpen = function(e: any) {
-    return testGreeter();
-};
+// プロパティが無いと言われるのを防ぐ程度の型定義
+declare const global: {
+  [x: string]: any ;
+}
 
-global.onInstall = function(e: any) {
-    global.onOpen(e)
+global.testGreeter = function(e: any) {
+    return testGreeter();
 };
