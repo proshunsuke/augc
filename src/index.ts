@@ -1,21 +1,13 @@
-import { Test } from './test'
-
-const greeter = (person: string) => {
-    return `Hello, ${person}!`;
+// プロパティが無いと言われるのを防ぐ程度の型定義
+// @ts-ignore
+declare const global: {
+    [x: string]: any ;
 };
 
-// @ts-ignore
-function testGreeter() {
-    const test = new Test();
-    const user = 'Grant';
-    Logger.log(greeter(user)+test.test());
-}
-
-// プロパティが無いと言われるのを防ぐ程度の型定義
-declare const global: {
-  [x: string]: any ;
-}
-
-global.testGreeter = function(e: any) {
-    return testGreeter();
+global.getKeyakiDocument = function(e: any) {
+    const URL: string = "https://us-central1-augc-260709.cloudfunctions.net/getKeyakiSchedule";
+    const scheduleJson = UrlFetchApp.fetch(URL).getContentText();
+    const schedule = JSON.parse(scheduleJson);
+    console.log(schedule);
+    console.log(schedule[0]);
 };

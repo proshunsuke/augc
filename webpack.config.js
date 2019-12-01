@@ -1,6 +1,7 @@
 const path = require('path');
 const GasPlugin = require('gas-webpack-plugin');
 const Es3ifyPlugin = require('es3ify-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = {
     mode: 'development',
@@ -14,7 +15,8 @@ module.exports = {
         filename: 'index.js'
     },
     resolve: {
-        extensions: ['.ts', '.js']
+        extensions: ['.ts', '.js'],
+        modules: [path.resolve(__dirname, 'src'), 'node_modules']
     },
     module: {
         rules: [
@@ -24,5 +26,9 @@ module.exports = {
             }
         ]
     },
-    plugins: [new GasPlugin(), new Es3ifyPlugin()]
+    plugins: [
+        new GasPlugin(),
+        new Es3ifyPlugin(),
+        // new webpack.IgnorePlugin(/jsdom$/)
+    ]
 };
