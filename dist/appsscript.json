@@ -12,7 +12,8 @@
     "https://www.googleapis.com/auth/service.management",
     "https://www.googleapis.com/auth/logging.read",
     "https://www.googleapis.com/auth/cloud-platform",
-    "https://www.googleapis.com/auth/script.external_request"
+    "https://www.googleapis.com/auth/script.external_request",
+    "https://www.googleapis.com/auth/calendar"
   ],
   "exceptionLogging": "STACKDRIVER"
 }
