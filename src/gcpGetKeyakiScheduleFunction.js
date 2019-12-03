@@ -13,7 +13,7 @@ exports.getKeyakiSchedule = async (req, res) => {
         page = await getBrowserPage();
     }
 
-    await page.goto('https://www.keyakizaka46.com/s/k46o/media/list');
+    await page.goto('https://www.keyakizaka46.com/s/k46o/media/list?dy=' + req.query['date']);
 
     const result = await page.evaluate("scheduleEvents");
 
