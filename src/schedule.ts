@@ -1,0 +1,17 @@
+import { KeyakiSchedule } from "./keyakiSchedule";
+import dayjs from "dayjs";
+
+export class Schedule {
+    setSchedule = () => {
+        const keyakiSchedule = new KeyakiSchedule();
+
+        const beginningOfThisMonth = dayjs().startOf('month');
+        const beginningOfNexYearMonth = dayjs().startOf('month').add(1, 'year');
+        let targetDate = beginningOfThisMonth;
+
+        while (targetDate.isBefore(beginningOfNexYearMonth)) {
+            keyakiSchedule.setKeyakiSchedule(targetDate);
+            targetDate = targetDate.add(1, 'month');
+        }
+    }
+}
