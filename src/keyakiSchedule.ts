@@ -13,21 +13,13 @@ interface KeyakiCalendarObj {
 }
 
 export class KeyakiSchedule {
-    setKeyakiSchedule = (date: dayjs.Dayjs): void => {
+    setSchedule = (date: dayjs.Dayjs): void => {
         const customUrl: string = this.getKeyakiCalendarUrl + date.format('YYYYMMDD');
         const scheduleJson: string = UrlFetchApp.fetch(customUrl).getContentText();
         const scheduleList: ScheduleObj[] = JSON.parse(scheduleJson);
 
         this.keyakiCalendarIds.forEach((keyakiCalendarObj: KeyakiCalendarObj) => this.deleteCalendarEvents(keyakiCalendarObj.calendarId, date));
         scheduleList.forEach((schedule: ScheduleObj) => this.createEvent(schedule));
-    };
-
-    private createEvent = (schedule: ScheduleObj): void => {
-        const keyakiCalendarId: KeyakiCalendarObj | undefined = this.keyakiCalendarIds.find((keyakiCalendarId: KeyakiCalendarObj) => {
-            return (keyakiCalendarId.kind === schedule.className);
-        });
-        const calendarId: string = (keyakiCalendarId || {kind: '', calendarId: ''}).calendarId;
-        CalendarApp.getCalendarById(calendarId).createAllDayEvent(schedule.title, new Date(schedule.start));
     };
 
     private deleteCalendarEvents = (calendarId: string, date: dayjs.Dayjs): void => {
@@ -42,6 +34,14 @@ export class KeyakiSchedule {
             });
             targetDate = targetDate.add(1, 'day');
         }
+    };
+
+    private createEvent = (schedule: ScheduleObj): void => {
+        const keyakiCalendarId: KeyakiCalendarObj | undefined = this.keyakiCalendarIds.find((keyakiCalendarId: KeyakiCalendarObj) => {
+            return (keyakiCalendarId.kind === schedule.className);
+        });
+        const calendarId: string = (keyakiCalendarId || {kind: '', calendarId: ''}).calendarId;
+        CalendarApp.getCalendarById(calendarId).createAllDayEvent(schedule.title, new Date(schedule.start));
     };
 
     readonly getKeyakiCalendarUrl: string = "https://us-central1-augc-260709.cloudfunctions.net/getKeyakiSchedule?date=";

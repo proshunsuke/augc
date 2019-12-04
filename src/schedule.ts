@@ -10,7 +10,7 @@ export class Schedule {
         let targetDate = beginningOfThisMonth;
 
         while (targetDate.isBefore(beginningOfNexYearMonth)) {
-            keyakiSchedule.setKeyakiSchedule(targetDate);
+            keyakiSchedule.setSchedule(targetDate);
             targetDate = targetDate.add(1, 'month');
         }
     }
