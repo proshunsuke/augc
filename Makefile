@@ -17,3 +17,6 @@ clasp/open:
 
 clasp/logs:
 	$(NODE_MODULUES_BIN_DIR)/clasp logs
+
+test:
+	$(NODE_MODULUES_BIN_DIR)/jest
