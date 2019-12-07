@@ -1,8 +1,8 @@
-import KeyakiSchedule from "./keyakiSchedule";
+import KeyakiSchedule from "./keyakizaka/keyakiSchedule";
 import dayjs from "dayjs";
 
 export default class Schedule {
-    setSchedule = () => {
+    setSchedule():void {
         const keyakiSchedule = new KeyakiSchedule();
 
         const beginningOfThisMonth = dayjs().startOf('month');
