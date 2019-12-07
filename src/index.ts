@@ -9,3 +9,5 @@ global.execute = function (e: any) {
     const schedule = new Schedule();
     schedule.setSchedule();
 };
+
+export const execute = global.execute;
