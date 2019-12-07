@@ -36,7 +36,8 @@
       "ts-jest": {
         "tsConfig": "tsconfig.json"
       },
-      "CalendarApp": {}
+      "CalendarApp": {},
+      "UrlFetchApp": {}
     },
     "testMatch": [
       "**/tests/**/*.test.ts"

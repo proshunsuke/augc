@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { ScheduleObj, KeyakiCalendarObj, keyakiCalendarIds } from "./keyakiObjects";
+import { ScheduleObj, KeyakiCalendarObj, keyakiCalendarIds} from "./keyakizaka/keyakiObjects"
 
 export default class Calendar {
     /**
@@ -7,7 +7,7 @@ export default class Calendar {
      * @param calendarId
      * @param date
      */
-    deleteCalendarEvents = (calendarId: string, date: dayjs.Dayjs): void => {
+    delete1MonthCalendarEvents(calendarId: string, date: dayjs.Dayjs): void{
         const calendar = CalendarApp.getCalendarById(calendarId);
         const targetDateBeginningOfMonth = date;
         const targetDateBeginningOfNextMonth = date.add(1, 'month');
@@ -25,7 +25,7 @@ export default class Calendar {
      *
      * @param schedule
      */
-    createEvent = (schedule: ScheduleObj): void => {
+    createEvent(schedule: ScheduleObj): void {
         const keyakiCalendarId: KeyakiCalendarObj | undefined = keyakiCalendarIds.find((keyakiCalendarId: KeyakiCalendarObj) => {
             return (keyakiCalendarId.kind === schedule.className);
         });
