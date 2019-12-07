@@ -12,17 +12,17 @@
     "@babel/preset-typescript": "*",
     "@google/clasp": "*",
     "@types/google-apps-script": "*",
+    "@types/jest": "*",
     "babel-loader": "*",
     "core-js": "*",
     "dayjs": "*",
     "es3ify-webpack-plugin": "*",
     "gas-webpack-plugin": "*",
+    "jest": "*",
+    "ts-jest": "*",
     "tslint": "*",
     "webpack": "*",
-    "webpack-cli": "*",
-    "jest":  "*",
-    "ts-jest": "*",
-    "@types/jest": "*"
+    "webpack-cli": "*"
   },
   "jest": {
     "moduleFileExtensions": [
