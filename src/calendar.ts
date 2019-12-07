@@ -16,6 +16,7 @@ export default class Calendar {
             const events = calendar.getEventsForDay(targetDate.toDate());
             events.forEach(event => {
                 event.deleteEvent();
+                Utilities.sleep(500); // API制限に引っかかってそうなのでsleepする
             });
             targetDate = targetDate.add(1, 'day');
         }
@@ -36,5 +37,6 @@ export default class Calendar {
         }
         const calendarId: string = keyakiCalendarId.calendarId;
         CalendarApp.getCalendarById(calendarId).createAllDayEvent(schedule.title, new Date(schedule.start));
+        Utilities.sleep(500); // API制限に引っかかってそうなのでsleepする
     };
 }

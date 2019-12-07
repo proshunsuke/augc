@@ -13,8 +13,9 @@ describe("delete1MonthCalendarEvents", (): void => {
         CalendarApp.getCalendarById = jest.fn(() => ({
             getEventsForDay: jest.fn(() => [calendarEvent])
         }));
+        Utilities.sleep = jest.fn().mockReturnThis();
 
-        calendarEvent.deleteEvent = jest.fn(() => {return});
+        calendarEvent.deleteEvent = jest.fn().mockReturnThis();
         calendar.delete1MonthCalendarEvents("id", dayjs("2019-12-01"));
         expect(calendarEvent.deleteEvent).toBeCalledTimes(31);
     });
@@ -24,10 +25,11 @@ describe("createEvent", (): void => {
     describe("正常な値が引数に渡された場合", (): void => {
         const schedule = defaultSchedule({});
         it("createAllDayEventが正常に呼ばれること", (): void => {
-            const createAllDayEventMock = jest.fn(() => {return});
+            const createAllDayEventMock = jest.fn().mockReturnThis();
 
             // @ts-ignore
             CalendarApp.getCalendarById = jest.fn(() => ({createAllDayEvent: createAllDayEventMock}));
+            Utilities.sleep = jest.fn().mockReturnThis();
             calendar.createEvent(schedule);
             expect(createAllDayEventMock).toBeCalledTimes(1);
         });
