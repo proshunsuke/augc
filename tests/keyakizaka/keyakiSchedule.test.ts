@@ -18,12 +18,11 @@ describe("setSchedule", (): void => {
 
         const date: dayjs.Dayjs = dayjs('2019-12-01');
         const keyakiSchedule: KeyakiSchedule = new KeyakiSchedule();
-        keyakiSchedule.setSchedule(date);
+        expect(() => {keyakiSchedule.setSchedule(date)}).not.toThrow();
         // @ts-ignore
         expect(Calendar.mock.instances[0].delete1MonthCalendarEvents).toBeCalledTimes(keyakiCalendarIds.length);
         // @ts-ignore
         expect(Calendar.mock.instances[1].createEvent).toBeCalledTimes(JSON.parse(getScheduleJson()).length);
-        expect(() => {Calendar}).not.toThrow();
     });
     it("カレンダーの削除に失敗した場合に例外が起きて後続の処理が止まること", ():void => {
         // @ts-ignore
