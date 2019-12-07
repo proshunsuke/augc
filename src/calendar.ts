@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { ScheduleObj, KeyakiCalendarObj, keyakiCalendarIds } from "./keyakiObjects";
 
-export class Calendar {
+export default class Calendar {
     /**
      *
      * @param calendarId
@@ -29,7 +29,12 @@ export class Calendar {
         const keyakiCalendarId: KeyakiCalendarObj | undefined = keyakiCalendarIds.find((keyakiCalendarId: KeyakiCalendarObj) => {
             return (keyakiCalendarId.kind === schedule.className);
         });
-        const calendarId: string = (keyakiCalendarId || {kind: '', calendarId: ''}).calendarId;
+        if (typeof keyakiCalendarId === 'undefined') {
+            console.info("スケジュールの内容: ");
+            console.info(schedule);
+            throw new Error("存在しない種類のスケジュールです。className: " + schedule.className);
+        }
+        const calendarId: string = keyakiCalendarId.calendarId;
         CalendarApp.getCalendarById(calendarId).createAllDayEvent(schedule.title, new Date(schedule.start));
     };
 }

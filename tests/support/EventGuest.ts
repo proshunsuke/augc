@@ -1,6 +1,6 @@
 import EventGuest = GoogleAppsScript.Calendar.EventGuest;
 
-export class EventGuestClass implements EventGuest {
+export default class EventGuestClass implements EventGuest {
     getAdditionalGuests(): number {
         throw new Error("Method not implemented.");
     }    getEmail(): string {

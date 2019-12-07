@@ -1,8 +1,8 @@
 import CalendarEvent = GoogleAppsScript.Calendar.CalendarEvent;
 // @ts-ignore
-import { EventGuestClass } from "./EventGuest";
+import EventGuestClass from "./EventGuest";
 
-export class CalendarEventClass implements CalendarEvent {
+export default class CalendarEventClass implements CalendarEvent {
     addEmailReminder(minutesBefore: number): CalendarEvent {
         throw new Error("Method not implemented.");
     }    addGuest(email: string): CalendarEvent {
