@@ -1,7 +1,7 @@
-import { KeyakiSchedule } from "./keyakiSchedule";
+import KeyakiSchedule from "./keyakiSchedule";
 import dayjs from "dayjs";
 
-export class Schedule {
+export default class Schedule {
     setSchedule = () => {
         const keyakiSchedule = new KeyakiSchedule();
 
