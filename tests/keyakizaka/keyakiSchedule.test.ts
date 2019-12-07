@@ -32,9 +32,7 @@ describe("setSchedule", (): void => {
 
         mocked(Calendar).mockImplementation((): any => {
             return {
-                delete1MonthCalendarEvents: (): void => {
-                    throw Error();
-                }
+                delete1MonthCalendarEvents: (): void => {throw Error()}
             }
         });
 
@@ -54,12 +52,8 @@ describe("setSchedule", (): void => {
 
         mocked(Calendar).mockImplementation((): any => {
             return {
-                delete1MonthCalendarEvents: (): void => {
-                    return
-                },
-                createEvent: (): void => {
-                    throw Error();
-                }
+                delete1MonthCalendarEvents: (): void => {return},
+                createEvent: (): void => {throw Error()}
             }
         });
 
