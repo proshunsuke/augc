@@ -1,26 +1,15 @@
-import dayjs from "dayjs";
 import { ScheduleObj, KeyakiCalendarObj, keyakiCalendarIds} from "./keyakizaka/keyakiObjects"
+import CalendarEvent = GoogleAppsScript.Calendar.CalendarEvent;
 
 export default class Calendar {
     /**
      *
-     * @param calendarId
-     * @param date
+     * @param event
      */
-    delete1MonthCalendarEvents(calendarId: string, date: dayjs.Dayjs): void{
-        const calendar = CalendarApp.getCalendarById(calendarId);
-        const targetDateBeginningOfMonth = date;
-        const targetDateBeginningOfNextMonth = date.add(1, 'month');
-        let targetDate = targetDateBeginningOfMonth;
-        while (targetDate.isBefore(targetDateBeginningOfNextMonth)) {
-            const events = calendar.getEventsForDay(targetDate.toDate());
-            events.forEach(event => {
-                event.deleteEvent();
-                Utilities.sleep(500); // API制限に引っかかってそうなのでsleepする
-            });
-            targetDate = targetDate.add(1, 'day');
-        }
-    };
+    deleteEvent(event: CalendarEvent): void {
+        event.deleteEvent();
+        Utilities.sleep(500); // API制限に引っかかってそうなのでsleepする
+    }
 
     /**
      *
@@ -37,6 +26,7 @@ export default class Calendar {
         }
         const calendarId: string = keyakiCalendarId.calendarId;
         CalendarApp.getCalendarById(calendarId).createAllDayEvent(schedule.title, new Date(schedule.start));
+        console.log("予定を作成しました。日付: " + schedule.start + ", タイトル: " + schedule.title);
         Utilities.sleep(500); // API制限に引っかかってそうなのでsleepする
     };
 }

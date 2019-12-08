@@ -4,7 +4,10 @@ import KeyakiSchedule from "../../src/keyakizaka/keyakiSchedule";
 import Calendar from "../../src/calendar";
 import { mocked } from "ts-jest/utils";
 import {keyakiCalendarIds} from "../../src/keyakizaka/keyakiObjects";
+// @ts-ignore
+import CalendarEventClass from "../support/calendarEvent";
 
+const calendarEvent = new CalendarEventClass();
 jest.mock("../../src/calendar");
 describe("setSchedule", (): void => {
     beforeEach(() => {
@@ -16,11 +19,16 @@ describe("setSchedule", (): void => {
             getContentText: jest.fn(() => getScheduleJson())
         }));
 
+        // @ts-ignore
+        CalendarApp.getCalendarById = jest.fn(() => ({
+            getEventsForDay: jest.fn(() => [calendarEvent])
+        }));
+
         const date: dayjs.Dayjs = dayjs('2019-12-01');
         const keyakiSchedule: KeyakiSchedule = new KeyakiSchedule();
         expect(() => {keyakiSchedule.setSchedule(date)}).not.toThrow();
         // @ts-ignore
-        expect(Calendar.mock.instances[0].delete1MonthCalendarEvents).toBeCalledTimes(keyakiCalendarIds.length);
+        expect(Calendar.mock.instances[0].deleteEvent).toBeCalledTimes(keyakiCalendarIds.length * date.endOf('month').date());
         // @ts-ignore
         expect(Calendar.mock.instances[1].createEvent).toBeCalledTimes(JSON.parse(getScheduleJson()).length);
     });
@@ -32,7 +40,7 @@ describe("setSchedule", (): void => {
 
         mocked(Calendar).mockImplementation((): any => {
             return {
-                delete1MonthCalendarEvents: (): void => {throw Error()}
+                deleteEvent: (): void => {throw Error()}
             }
         });
 
@@ -50,9 +58,14 @@ describe("setSchedule", (): void => {
             getContentText: jest.fn(() => getScheduleJson())
         }));
 
+        // @ts-ignore
+        CalendarApp.getCalendarById = jest.fn(() => ({
+            getEventsForDay: jest.fn(() => [calendarEvent])
+        }));
+
         mocked(Calendar).mockImplementation((): any => {
             return {
-                delete1MonthCalendarEvents: (): void => {return},
+                deleteEvent: (): void => {return},
                 createEvent: (): void => {throw Error()}
             }
         });
