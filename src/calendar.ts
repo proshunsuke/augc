@@ -1,5 +1,4 @@
 import { ScheduleObj, KeyakiCalendarObj, keyakiCalendarIds} from "./keyakizaka/keyakiObjects"
-import CalendarEvent = GoogleAppsScript.Calendar.CalendarEvent;
 import Retry from "./lib/retry";
 
 export default class Calendar {
@@ -7,7 +6,7 @@ export default class Calendar {
      *
      * @param event
      */
-    deleteEvent(event: CalendarEvent): void {
+    deleteEvent(event: GoogleAppsScript.Calendar.CalendarEvent): void {
         Retry.retryable(3, () => {
             event.deleteEvent();
         });
