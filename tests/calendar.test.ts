@@ -1,23 +1,18 @@
 import Calendar from "../src/calendar";
-import dayjs from "dayjs";
 // @ts-ignore
 import CalendarEventClass from "./support/calendarEvent";
 import {ScheduleObj} from "../src/keyakizaka/keyakiObjects";
 
 const calendar = new Calendar();
 
-describe("delete1MonthCalendarEvents", (): void => {
+describe("deleteEvent", (): void => {
     const calendarEvent = new CalendarEventClass();
-    it("1ヶ月分deleteEvent()が呼ばれること", (): void => {
-        // @ts-ignore
-        CalendarApp.getCalendarById = jest.fn(() => ({
-            getEventsForDay: jest.fn(() => [calendarEvent])
-        }));
+    it("event.deleteEventが1回呼ばれること", (): void => {
         Utilities.sleep = jest.fn().mockReturnThis();
 
         calendarEvent.deleteEvent = jest.fn().mockReturnThis();
-        calendar.delete1MonthCalendarEvents("id", dayjs("2019-12-01"));
-        expect(calendarEvent.deleteEvent).toBeCalledTimes(31);
+        calendar.deleteEvent(calendarEvent);
+        expect(calendarEvent.deleteEvent).toBeCalledTimes(1);
     });
 });
 

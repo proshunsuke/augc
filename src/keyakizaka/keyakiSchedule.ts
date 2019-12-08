@@ -12,8 +12,10 @@ export default class KeyakiSchedule {
         const scheduleJson: string = UrlFetchApp.fetch(customUrl).getContentText();
         const scheduleList: ScheduleObj[] = JSON.parse(scheduleJson);
 
+        console.log(date.format('YYYY年MM月') + "分の予定を更新します");
         this.delete1MonthCalendarEvents(date);
-        this.createEvents(scheduleList);
+        this.create1MonthEvents(scheduleList, date);
+        console.log(date.format('YYYY年MM月') + "分の予定を更新しました");
     };
 
     /**
@@ -24,22 +26,33 @@ export default class KeyakiSchedule {
         const calendar = new Calendar();
         let deleteEventCallCount: number = 0;
         keyakiCalendarIds.forEach((keyakiCalendarObj: KeyakiCalendarObj) => {
-            deleteEventCallCount++;
-            try {
-                calendar.delete1MonthCalendarEvents(keyakiCalendarObj.calendarId, date);
-            } catch (e) {
-                console.error("カレンダー削除に失敗しました。失敗するまでに実行された回数: " + deleteEventCallCount.toString());
-                throw e;
+            const calendarApp = CalendarApp.getCalendarById(keyakiCalendarObj.calendarId);
+            const targetDateBeginningOfMonth = date;
+            const targetDateBeginningOfNextMonth = date.add(1, 'month');
+            let targetDate = targetDateBeginningOfMonth;
+
+            while (targetDate.isBefore(targetDateBeginningOfNextMonth)) {
+                const events = calendarApp.getEventsForDay(targetDate.toDate());
+                events.forEach(event => {
+                    deleteEventCallCount++;
+                    try {
+                        calendar.deleteEvent(event);
+                    } catch (e) {
+                        console.error("カレンダー削除に失敗しました。失敗するまでに実行された回数: " + deleteEventCallCount.toString());
+                        throw e;
+                    }
+                });
+                targetDate = targetDate.add(1, 'day');
             }
         });
-        console.info("全てのカレンダー削除実行回数" + deleteEventCallCount.toString());
+        console.info(date.format("YYYY年MM月") + "分のカレンダー削除実行回数" + deleteEventCallCount.toString());
     }
 
     /**
      *
      * @param scheduleList
      */
-    private createEvents(scheduleList: ScheduleObj[]) {
+    private create1MonthEvents(scheduleList: ScheduleObj[], date: dayjs.Dayjs) {
         const calendar = new Calendar();
         let createEventCallCount: number = 0;
         scheduleList.forEach((schedule: ScheduleObj) => {
@@ -51,6 +64,6 @@ export default class KeyakiSchedule {
                 throw e;
             }
         });
-        console.info("全てのカレンダー作成実行回数: " + createEventCallCount.toString());
+        console.info(date.format("YYYY年MM月") +"分のカレンダー作成実行回数: " + createEventCallCount.toString());
     }
 }
