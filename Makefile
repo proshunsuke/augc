@@ -23,3 +23,4 @@ clasp/logs:
 
 test:
 	$(NODE_MODULUES_BIN_DIR)/jest
+	$(MAKE) webpack/build
