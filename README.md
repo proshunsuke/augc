@@ -2,12 +2,14 @@
 
 Auto Updating Google Calendar using google apps script
 
+![スケジュールを追加した時の画面](https://user-images.githubusercontent.com/3148511/70384167-eafa3180-19bd-11ea-87e3-4bca2a078021.png)
+
 ## 概要
 
 公式サイトのカレンダー情報を元に自動的にGoogleカレンダーの予定を更新します  
 更新頻度は1日に1回午前3時〜4時の間に1年分です  
 現在対応している公式サイトは以下の通りです
-* [スケジュール | 欅坂46公式サイト](https://www.keyakizaka46.com/s/k46o/media/list)
+* <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Keyakizaka46_logo.svg/800px-Keyakizaka46_logo.svg.png" width="12px" alt="欅坂46のロゴ"> [スケジュール | 欅坂46公式サイト](https://www.keyakizaka46.com/s/k46o/media/list)
 
 ### 目的
 
@@ -29,6 +31,8 @@ Auto Updating Google Calendar using google apps script
  [他のカレンダー] → [+] → [URLで追加] と進んでください  
  先程コピーしたURLを貼り付けてください  
  [カレンダーを追加]を押してください
+
+![操作例](https://user-images.githubusercontent.com/3148511/70384124-192b4180-19bd-11ea-9ad5-f63d23c74bc0.gif)
 
 ## GoogleカレンダーのURL
 
