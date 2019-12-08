@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import Calendar from "../calendar";
 import {ScheduleObj, KeyakiCalendarObj, getKeyakiCalendarUrl, keyakiCalendarIds} from "./keyakiObjects";
+import Retry from "../lib/retry";
 
 export default class KeyakiSchedule {
     /**
@@ -9,7 +10,11 @@ export default class KeyakiSchedule {
      */
     setSchedule(date: dayjs.Dayjs): void {
         const customUrl: string = getKeyakiCalendarUrl + date.format('YYYYMMDD');
-        const scheduleJson: string = UrlFetchApp.fetch(customUrl).getContentText();
+
+        const scheduleJson: string = Retry.retryable(3, () => {
+            return UrlFetchApp.fetch(customUrl).getContentText();
+        });
+
         const scheduleList: ScheduleObj[] = JSON.parse(scheduleJson);
 
         console.log(date.format('YYYY年MM月') + "分の予定を更新します");
@@ -26,7 +31,9 @@ export default class KeyakiSchedule {
         const calendar = new Calendar();
         let deleteEventCallCount: number = 0;
         keyakiCalendarIds.forEach((keyakiCalendarObj: KeyakiCalendarObj) => {
-            const calendarApp = CalendarApp.getCalendarById(keyakiCalendarObj.calendarId);
+            const calendarApp: GoogleAppsScript.Calendar.Calendar = Retry.retryable(3, () => {
+                return CalendarApp.getCalendarById(keyakiCalendarObj.calendarId);
+            });
             const targetDateBeginningOfMonth = date;
             const targetDateBeginningOfNextMonth = date.add(1, 'month');
             let targetDate = targetDateBeginningOfMonth;
@@ -51,6 +58,7 @@ export default class KeyakiSchedule {
     /**
      *
      * @param scheduleList
+     * @param date
      */
     private create1MonthEvents(scheduleList: ScheduleObj[], date: dayjs.Dayjs) {
         const calendar = new Calendar();
