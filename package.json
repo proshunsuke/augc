@@ -19,6 +19,7 @@
     "es3ify-webpack-plugin": "*",
     "gas-webpack-plugin": "*",
     "jest": "*",
+    "mockdate": "*",
     "ts-jest": "*",
     "tslint": "*",
     "webpack": "*",
@@ -38,7 +39,9 @@
       },
       "CalendarApp": {},
       "UrlFetchApp": {},
-      "Utilities": {}
+      "Utilities": {},
+      "PropertiesService": {},
+      "ScriptApp": {}
     },
     "testMatch": [
       "**/tests/**/*.test.ts"
