@@ -22,7 +22,7 @@ export default class Trigger {
     static setTrigger(targetDate: dayjs.Dayjs): void {
         const properties: GoogleAppsScript.Properties.Properties = PropertiesService.getScriptProperties();
         properties.setProperty(TARGET_DATE_KEY, targetDate.format('YYYY-MM-DD'));
-        ScriptApp.newTrigger(TRIGGER_FUNCTION_NAME).timeBased().after(TRIGGER_DURATION);
+        ScriptApp.newTrigger(TRIGGER_FUNCTION_NAME).timeBased().after(TRIGGER_DURATION).create();
         console.info(TERMINATION_MINUTES + "分以上経過したので次のトリガーをセットして終了します。次実行開始する月: " + targetDate.format('YYYY-MM-DD'));
     }
 
