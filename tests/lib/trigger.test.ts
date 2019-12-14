@@ -20,8 +20,8 @@ describe("hasExceededTerminationMinutes", (): void => {
 });
 
 describe("setTrigger", (): void => {
-    it("setPropertyとafterが呼ばれること", () => {
-        const afterMock = jest.fn().mockReturnThis();
+    it("setPropertyとcreateが呼ばれること", () => {
+        const createMock = jest.fn().mockReturnThis();
         const setPropertyMock = jest.fn().mockReturnThis();
 
         // @ts-ignore
@@ -29,14 +29,17 @@ describe("setTrigger", (): void => {
 
         // @ts-ignore
         ScriptApp.newTrigger = jest.fn(() => ({
-            timeBased: jest.fn(() => ({after: afterMock}))
+            timeBased: jest.fn(() => ({
+                after: jest.fn(() => ({
+                    create: createMock
+                }))
+            }))
         }));
 
         Trigger.setTrigger(dayjs('2019-12-01'));
         expect(setPropertyMock).toBeCalledTimes(1);
         expect(setPropertyMock).toBeCalledWith('target_date', '2019-12-01');
-        expect(afterMock).toBeCalledTimes(1);
-        expect(afterMock).toBeCalledWith(10000);
+        expect(createMock).toBeCalledTimes(1);
     });
 });
 
