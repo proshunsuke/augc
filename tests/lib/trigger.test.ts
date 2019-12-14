@@ -1,0 +1,62 @@
+import MockDate from 'mockdate'
+import Trigger from "../../src/lib/trigger";
+import dayjs = require("dayjs");
+
+beforeEach(() => {
+    MockDate.set(new Date('2019-12-10'))
+});
+
+describe("hasExceededTerminationMinutes", (): void => {
+    it("現在時刻が基準時刻を超えている場合にtrueを返すこと", () => {
+        const startDate = dayjs('2019-12-09T23:56:00.000Z');
+        const result = Trigger.hasExceededTerminationMinutes(startDate);
+        expect(result).toBeTruthy();
+    });
+    it("現在時刻が基準時刻を超えていない場合にfalseを返すこと", () => {
+        const startDate = dayjs('2019-12-09T23:56:01.000Z');
+        const result = Trigger.hasExceededTerminationMinutes(startDate);
+        expect(result).toBeFalsy();
+    });
+});
+
+describe("setTrigger", (): void => {
+    it("setPropertyとafterが呼ばれること", () => {
+        const afterMock = jest.fn().mockReturnThis();
+        const setPropertyMock = jest.fn().mockReturnThis();
+
+        // @ts-ignore
+        PropertiesService.getScriptProperties = jest.fn(() => ({setProperty: setPropertyMock}));
+
+        // @ts-ignore
+        ScriptApp.newTrigger = jest.fn(() => ({
+            timeBased: jest.fn(() => ({after: afterMock}))
+        }));
+
+        Trigger.setTrigger(dayjs('2019-12-01'));
+        expect(setPropertyMock).toBeCalledTimes(1);
+        expect(setPropertyMock).toBeCalledWith('target_date', '2019-12-01');
+        expect(afterMock).toBeCalledTimes(1);
+        expect(afterMock).toBeCalledWith(10000);
+    });
+});
+
+describe("getTargetDateProperty", (): void => {
+    it("getPropertyが呼ばれること", () => {
+        const getPropertyMock = jest.fn().mockReturnValue('2019-12-01');
+        // @ts-ignore
+        PropertiesService.getScriptProperties = jest.fn(() => ({getProperty: getPropertyMock}));
+        const result = Trigger.getTargetDateProperty();
+        expect(result).toBe('2019-12-01');
+        expect(getPropertyMock).toBeCalledTimes(1);
+    });
+});
+
+describe("deleteTargetDateProperty", (): void => {
+    it("deletePropertyが呼ばれること", () => {
+        const deletePropertyMock = jest.fn().mockReturnValueOnce('2019-12-01');
+        // @ts-ignore
+        PropertiesService.getScriptProperties = jest.fn(() => ({deleteProperty: deletePropertyMock}));
+        Trigger.deleteTargetDateProperty();
+        expect(deletePropertyMock).toBeCalledTimes(1);
+    });
+});
