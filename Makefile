@@ -1,6 +1,9 @@
 NODE_MODULUES_BIN_DIR :=  ./node_modules/.bin
 
 setup:
+	$(MAKE) yarn/install
+
+yarn/install:
 	yarn install
 
 webpack/build:
@@ -9,7 +12,7 @@ webpack/build:
 clasp/login:
 	$(NODE_MODULUES_BIN_DIR)/clasp login
 
-clasp/push: webpack/build
+clasp/push: yarn/install webpack/build
 	$(NODE_MODULUES_BIN_DIR)/clasp push -f
 
 clasp/run:
