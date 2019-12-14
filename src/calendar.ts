@@ -4,7 +4,7 @@ import Retry from "./lib/retry";
 export default class Calendar {
     /**
      *
-     * @param event
+     * @param {GoogleAppsScript.Calendar.CalendarEvent} event
      */
     deleteEvent(event: GoogleAppsScript.Calendar.CalendarEvent): void {
         Retry.retryable(3, () => {
@@ -15,7 +15,7 @@ export default class Calendar {
 
     /**
      *
-     * @param schedule
+     * @param {ScheduleObj} schedule
      */
     createEvent(schedule: ScheduleObj): void {
         const keyakiCalendarId: KeyakiCalendarObj | undefined = keyakiCalendarIds.find((keyakiCalendarId: KeyakiCalendarObj) => {
@@ -30,7 +30,7 @@ export default class Calendar {
         Retry.retryable(3, () => {
             CalendarApp.getCalendarById(calendarId).createAllDayEvent(schedule.title, new Date(schedule.start));
         });
-        console.log("予定を作成しました。日付: " + schedule.start + ", タイトル: " + schedule.title);
+        console.info("予定を作成しました。日付: " + schedule.start + ", タイトル: " + schedule.title);
         Utilities.sleep(500); // API制限に引っかかってそうなのでsleepする
     };
 }

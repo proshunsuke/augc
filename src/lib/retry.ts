@@ -2,8 +2,9 @@ export default class Retry{
     /**
      * GAS内で使用できるAPIのリトライ処理
      *
-     * @param retryCount
-     * @param func
+     * @param {number} retryCount
+     * @param {Function} func
+     * @returns {any}
      */
     static retryable(retryCount: number, func: Function){
         let lastError = null;
@@ -12,7 +13,7 @@ export default class Retry{
                 return func();
             } catch (e) {
                 lastError = e;
-                console.log("エラーが起きました。リトライを行います。message: " + e.message + ", リトライ" + i.toString() + "回目");
+                console.info("エラーが起きました。リトライを行います。message: " + e.message + ", リトライ" + i.toString() + "回目");
             }
         }
         throw lastError;

@@ -6,7 +6,7 @@ import Retry from "../lib/retry";
 export default class KeyakiSchedule {
     /**
      *
-     * @param date
+     * @param {dayjs.Dayjs} date
      */
     setSchedule(date: dayjs.Dayjs): void {
         const customUrl: string = getKeyakiCalendarUrl + date.format('YYYYMMDD');
@@ -17,15 +17,15 @@ export default class KeyakiSchedule {
 
         const scheduleList: ScheduleObj[] = JSON.parse(scheduleJson);
 
-        console.log(date.format('YYYY年MM月') + "分の予定を更新します");
+        console.info(date.format('YYYY年MM月') + "分の予定を更新します");
         this.delete1MonthCalendarEvents(date);
         this.create1MonthEvents(scheduleList, date);
-        console.log(date.format('YYYY年MM月') + "分の予定を更新しました");
+        console.info(date.format('YYYY年MM月') + "分の予定を更新しました");
     };
 
     /**
      *
-     * @param date
+     * @param {dayjs.Dayjs} date
      */
     private delete1MonthCalendarEvents(date: dayjs.Dayjs) {
         const calendar = new Calendar();
@@ -57,8 +57,8 @@ export default class KeyakiSchedule {
 
     /**
      *
-     * @param scheduleList
-     * @param date
+     * @param {ScheduleObj[]} scheduleList
+     * @param {dayjs.Dayjs} date
      */
     private create1MonthEvents(scheduleList: ScheduleObj[], date: dayjs.Dayjs) {
         const calendar = new Calendar();
