@@ -4,10 +4,6 @@ import KeyakiSchedule from "../../src/keyakizaka/keyakiSchedule";
 import Calendar from "../../src/calendar";
 import { mocked } from "ts-jest/utils";
 import {keyakiCalendarIds} from "../../src/keyakizaka/keyakiObjects";
-// @ts-ignore
-import CalendarEventClass from "../support/calendarEvent";
-
-const calendarEvent = new CalendarEventClass();
 jest.mock("../../src/calendar");
 describe("setSchedule", (): void => {
     beforeEach(() => {
@@ -19,9 +15,11 @@ describe("setSchedule", (): void => {
             getContentText: jest.fn(() => getScheduleJson())
         }));
 
+        const calendarEventMock = jest.fn(() => ({deleteEvent: jest.fn().mockReturnThis()}));
+
         // @ts-ignore
         CalendarApp.getCalendarById = jest.fn(() => ({
-            getEventsForDay: jest.fn(() => [calendarEvent])
+            getEventsForDay: jest.fn(() => [calendarEventMock()])
         }));
 
         const date: dayjs.Dayjs = dayjs('2019-12-01');
@@ -58,9 +56,11 @@ describe("setSchedule", (): void => {
             getContentText: jest.fn(() => getScheduleJson())
         }));
 
+        const calendarEventMock = jest.fn(() => ({deleteEvent: jest.fn().mockReturnThis()}));
+
         // @ts-ignore
         CalendarApp.getCalendarById = jest.fn(() => ({
-            getEventsForDay: jest.fn(() => [calendarEvent])
+            getEventsForDay: jest.fn(() => [calendarEventMock()])
         }));
 
         mocked(Calendar).mockImplementation((): any => {
