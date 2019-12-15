@@ -2,3 +2,4 @@
 /dist/index.js
 /creds.json
 /.clasprc.json
+/coverage/

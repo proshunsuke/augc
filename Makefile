@@ -26,4 +26,7 @@ clasp/logs:
 
 test:
 	$(NODE_MODULUES_BIN_DIR)/jest
+
+test/ci:
 	$(MAKE) webpack/build
+	$(NODE_MODULUES_BIN_DIR)/jest --coverage
