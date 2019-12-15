@@ -63,3 +63,23 @@ describe("deleteTargetDateProperty", (): void => {
         expect(deletePropertyMock).toBeCalledTimes(1);
     });
 });
+
+describe("deleteTriggers", (): void => {
+    it("トリガーの名前がsetScheduleの場合だけdeleteTriggerが呼ばれること", () => {
+        const triggerSetScheduleMock = jest.fn(() => ({
+            getHandlerFunction: jest.fn(() => 'setSchedule')
+        }));
+        const triggerNotSetScheduleMock = jest.fn(() => ({
+            getHandlerFunction: jest.fn(() => 'notSetSchedule')
+        }));
+
+        ScriptApp.getProjectTriggers = jest.fn().mockReturnValue([
+            triggerSetScheduleMock(),
+            triggerNotSetScheduleMock(),
+            triggerSetScheduleMock()
+        ]);
+        ScriptApp.deleteTrigger = jest.fn().mockReturnThis();
+        Trigger.deleteTriggers();
+        expect(ScriptApp.deleteTrigger).toBeCalledTimes(2);
+    });
+});
