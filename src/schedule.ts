@@ -1,5 +1,5 @@
 import KeyakiSchedule from "./keyakizaka/keyakiSchedule";
-import Trigger from "./lib/trigger";
+import Trigger, { TERMINATION_MINUTES } from "./lib/trigger";
 import dayjs from "dayjs";
 
 export default class Schedule {
@@ -15,10 +15,12 @@ export default class Schedule {
             targetBeginningOfMonth = targetBeginningOfMonth.add(1, 'month');
             if (Trigger.hasExceededTerminationMinutes(startDate)) {
                 Trigger.setTrigger(targetBeginningOfMonth);
+                console.info(TERMINATION_MINUTES + "分以上経過したので次のトリガーをセットして終了します。次実行開始する月: " + targetBeginningOfMonth.format('YYYY-MM-DD'));
                 return;
             }
         }
         Trigger.deleteTargetDateProperty();
+        Trigger.deleteTriggers();
     }
 
     /**

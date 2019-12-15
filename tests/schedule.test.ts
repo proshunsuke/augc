@@ -37,15 +37,17 @@ describe("setSchedule", (): void => {
         expect(KeyakiSchedule.mock.instances[0].setSchedule).toBeCalledTimes(2);
         expect(Trigger.setTrigger).toBeCalledTimes(1);
     });
-    it("指定時間内に全て実行出来たらdeleteTargetDatePropertyが呼ばれること", () => {
+    it("指定時間内に全て実行出来たらdeleteTargetDatePropertyとdeleteTriggersが呼ばれること", () => {
         Trigger.hasExceededTerminationMinutes = jest.fn().mockReturnValue(false);
         Trigger.setTrigger = jest.fn().mockReturnThis();
         Trigger.deleteTargetDateProperty = jest.fn().mockReturnThis();
+        Trigger.deleteTriggers = jest.fn().mockReturnThis();
         const schedule: Schedule = new Schedule();
         schedule.setSchedule();
         // @ts-ignore
         expect(KeyakiSchedule.mock.instances[0].setSchedule).toBeCalledTimes(12);
         expect(Trigger.setTrigger).not.toBeCalled();
         expect(Trigger.deleteTargetDateProperty).toBeCalledTimes(1);
+        expect(Trigger.deleteTriggers).toBeCalledTimes(1);
     });
 });
