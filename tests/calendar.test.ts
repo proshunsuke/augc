@@ -1,18 +1,15 @@
 import Calendar from "../src/calendar";
-// @ts-ignore
-import CalendarEventClass from "./support/calendarEvent";
 import {ScheduleObj} from "../src/keyakizaka/keyakiObjects";
-
 const calendar = new Calendar();
 
 describe("deleteEvent", (): void => {
-    const calendarEvent = new CalendarEventClass();
     it("event.deleteEventが1回呼ばれること", (): void => {
         Utilities.sleep = jest.fn().mockReturnThis();
 
-        calendarEvent.deleteEvent = jest.fn().mockReturnThis();
-        calendar.deleteEvent(calendarEvent);
-        expect(calendarEvent.deleteEvent).toBeCalledTimes(1);
+        const deleteEventMock = jest.fn().mockReturnThis();
+        const calendarEventMock: jest.Mock<any, any> = jest.fn(() => ({deleteEvent: deleteEventMock}));
+        calendar.deleteEvent(calendarEventMock());
+        expect(deleteEventMock).toBeCalledTimes(1);
     });
 });
 
@@ -37,6 +34,14 @@ describe("createEvent", (): void => {
     })
 });
 
+/**
+ *
+ * @param {string | undefined} title
+ * @param {string | undefined} start
+ * @param {string | undefined} description
+ * @param {string | undefined} className
+ * @returns {ScheduleObj}
+ */
 function defaultSchedule(
     {
         title = "タイトル",
