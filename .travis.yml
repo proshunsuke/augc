@@ -5,4 +5,4 @@ dist: trusty
 sudo: false
 cache: yarn
 script:
-  - make test && cat ./coverage/lcov.info | ./node_modules/.bin/coveralls
+  - make test/ci && cat ./coverage/lcov.info | ./node_modules/.bin/coveralls
