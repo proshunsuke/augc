@@ -1,4 +1,4 @@
-# augc [![Build Status](https://travis-ci.com/proshunsuke/augc.svg?branch=master)](https://travis-ci.com/proshunsuke/augc)
+# augc [![Build Status](https://travis-ci.com/proshunsuke/augc.svg?branch=master)](https://travis-ci.com/proshunsuke/augc) [![Coverage Status](https://coveralls.io/repos/github/proshunsuke/augc/badge.svg?branch=coverage)](https://coveralls.io/github/proshunsuke/augc?branch=coverage)
 
 Auto Updating Google Calendar using google apps script
 
