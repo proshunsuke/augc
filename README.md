@@ -70,7 +70,7 @@ make test
 ### リリース
 
 ```shell script
-make clasp/run
+make clasp/push
 ```
 
 ## 連絡先
