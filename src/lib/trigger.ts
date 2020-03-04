@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 const TARGET_DATE_KEY: string = 'target_date';
 export const TERMINATION_MINUTES: number = 4;
 const TRIGGER_FUNCTION_NAME: string = 'setSchedule';
-const TRIGGER_DURATION: number = 10 * 1000; // 10秒後
+const TRIGGER_DURATION: number = 60 * 1000; // 1分後
 
 export default class Trigger {
     /**
