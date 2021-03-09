@@ -35,5 +35,5 @@ test:
 	ENV=production yarn jest
 
 test/ci:
-	$(MAKE) webpack/build
+	$(MAKE) build
 	ENV=production yarn jest --coverage
