@@ -7,36 +7,39 @@
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "*",
-    "@babel/plugin-proposal-class-properties": "*",
     "@babel/preset-env": "*",
     "@babel/preset-typescript": "*",
+    "@google-cloud/functions-framework": "*",
     "@google/clasp": "*",
     "@types/google-apps-script": "*",
     "@types/jest": "*",
+    "@types/node": "*",
+    "@types/node-fetch": "*",
     "babel-loader": "*",
-    "core-js": "*",
     "coveralls": "*",
     "dayjs": "*",
-    "es3ify-webpack-plugin": "*",
     "gas-webpack-plugin": "*",
     "jest": "*",
     "mockdate": "*",
+    "node-fetch": "*",
+    "puppeteer": "^8.0.0",
+    "regenerator-runtime": "*",
     "ts-jest": "*",
-    "tslint": "*",
+    "ts-loader": "*",
     "webpack": "*",
     "webpack-cli": "*"
   },
   "jest": {
     "moduleFileExtensions": [
-      "ts",
-      "js"
+      "js",
+      "ts"
     ],
     "transform": {
       "^.+\\.ts$": "ts-jest"
     },
     "globals": {
       "ts-jest": {
-        "tsConfig": "tsconfig.json"
+        "tsconfig": "tsconfig.json"
       },
       "CalendarApp": {},
       "UrlFetchApp": {},

@@ -1,6 +1,9 @@
 import Retry from "../../src/lib/retry";
 
 describe("retryable", (): void => {
+    beforeEach(() => {
+        jest.spyOn(console, "info").mockImplementation();
+    });
     it("例外が起きない場合はそのまま実行されて値が返ること", (): void => {
         const mockFunc = jest.fn();
         mockFunc.mockReturnValueOnce(1);

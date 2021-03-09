@@ -2,18 +2,19 @@ import dayjs from "dayjs";
 import Calendar from "../calendar";
 import {ScheduleObj, KeyakiCalendarObj, getKeyakiCalendarUrl, keyakiCalendarIds} from "./keyakiObjects";
 import Retry from "../lib/retry";
+import fetch, { Response } from 'node-fetch';
+import 'regenerator-runtime';
 
 export default class KeyakiSchedule {
     /**
      *
      * @param {dayjs.Dayjs} date
      */
-    setSchedule(date: dayjs.Dayjs): void {
+    async setSchedule(date: dayjs.Dayjs): Promise<void> {
         const customUrl: string = getKeyakiCalendarUrl + date.format('YYYYMMDD');
 
-        const scheduleJson: string = Retry.retryable(3, () => {
-            return UrlFetchApp.fetch(customUrl).getContentText();
-        });
+        const scheduleJson = await this.getScheduleJson(customUrl);
+        // console.log(scheduleJson);
 
         const scheduleList: ScheduleObj[] = JSON.parse(scheduleJson);
 
@@ -25,12 +26,30 @@ export default class KeyakiSchedule {
 
     /**
      *
+     * @param {string} customUrl
+     * @returns {Promise<any>}
+     * @private
+     */
+    private async getScheduleJson(customUrl: string) {
+        if (process.env.ENV === 'production') {
+            return Retry.retryable(3,  () => {
+                return UrlFetchApp.fetch(customUrl).getContentText();
+            });
+        } else {
+            const response = await fetch(customUrl);
+            return response.text();
+        }
+    }
+
+    /**
+     *
      * @param {dayjs.Dayjs} date
      */
     private delete1MonthCalendarEvents(date: dayjs.Dayjs) {
         const calendar = new Calendar();
         let deleteEventCallCount: number = 0;
         keyakiCalendarIds.forEach((keyakiCalendarObj: KeyakiCalendarObj) => {
+            if (process.env.ENV !== 'production') return;
             const calendarApp: GoogleAppsScript.Calendar.Calendar = Retry.retryable(3, () => {
                 return CalendarApp.getCalendarById(keyakiCalendarObj.calendarId);
             });
@@ -40,7 +59,7 @@ export default class KeyakiSchedule {
 
             while (targetDate.isBefore(targetDateBeginningOfNextMonth)) {
                 const events = calendarApp.getEventsForDay(targetDate.toDate());
-                events.forEach(event => {
+                events.forEach((event) => {
                     deleteEventCallCount++;
                     try {
                         calendar.deleteEvent(event);

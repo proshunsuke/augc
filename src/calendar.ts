@@ -10,7 +10,9 @@ export default class Calendar {
         Retry.retryable(3, () => {
             event.deleteEvent();
         });
-        Utilities.sleep(500); // API制限に引っかかってそうなのでsleepする
+        if (process.env.ENV === 'production') {
+            Utilities.sleep(500); // API制限に引っかかってそうなのでsleepする
+        }
     }
 
     /**
@@ -28,9 +30,13 @@ export default class Calendar {
         }
         const calendarId: string = keyakiCalendarId.calendarId;
         Retry.retryable(3, () => {
-            CalendarApp.getCalendarById(calendarId).createAllDayEvent(schedule.title, new Date(schedule.start));
+            if (process.env.ENV === 'production') {
+                CalendarApp.getCalendarById(calendarId).createAllDayEvent(schedule.title, new Date(schedule.start));
+            }
         });
         console.info("予定を作成しました。日付: " + schedule.start + ", タイトル: " + schedule.title);
-        Utilities.sleep(500); // API制限に引っかかってそうなのでsleepする
+        if (process.env.ENV === 'production') {
+            Utilities.sleep(500); // API制限に引っかかってそうなのでsleepする
+        }
     };
 }

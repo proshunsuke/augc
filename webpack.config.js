@@ -1,12 +1,17 @@
 const path = require('path');
 const GasPlugin = require('gas-webpack-plugin');
-const Es3ifyPlugin = require('es3ify-webpack-plugin');
 const webpack = require('webpack');
+
+const babelLoader = {
+    loader: 'babel-loader',
+    options: {
+        presets: ['@babel/preset-env']
+    }
+}
 
 module.exports = {
     mode: 'development',
-    devtool: 'inline-source-map',
-    context: __dirname,
+    // devtool: process.env.ENV === 'production' ? false : 'inline-source-map',
     entry: {
         main: path.resolve(__dirname, 'src', 'index.ts')
     },
@@ -21,14 +26,28 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.[tj]s$/,
-                loader: 'babel-loader'
-            }
+                test: /\.js$/,
+                use: [babelLoader]
+            },
+            {
+                test: /\.ts$/,
+                use: [
+                    babelLoader,
+                    {
+                        loader: 'ts-loader',
+                    },
+                ],
+            },
         ]
     },
     plugins: [
         new GasPlugin(),
-        new Es3ifyPlugin(),
-        // new webpack.IgnorePlugin(/jsdom$/)
-    ]
+        new webpack.EnvironmentPlugin({
+            ENV: process.env.ENV || 'production'
+        })
+    ],
+    externals: {
+        puppeteer: 'require("puppeteer")',
+    },
+    target: 'node',
 };

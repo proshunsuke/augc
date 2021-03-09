@@ -1,6 +1,7 @@
 import Schedule from "./schedule";
 import Trigger from "./lib/trigger";
 import dayjs from "dayjs";
+import 'regenerator-runtime';
 
 // @ts-ignore
 declare const global: {
@@ -11,7 +12,7 @@ declare const global: {
  *
  * @param e
  */
-global.createSetScheduleTrigger = function (e: any) {
+global.createSetScheduleTrigger = (e: any) => {
     console.info("スケジュール更新のトリガーを作成します");
     Trigger.setTrigger(dayjs());
     console.info("スケジュール更新のトリガーを作成しました");
@@ -21,10 +22,10 @@ global.createSetScheduleTrigger = function (e: any) {
  *
  * @param e
  */
-global.setSchedule = function (e: any) {
+global.setSchedule = (e: any) => {
     const schedule = new Schedule();
     console.info("スケジュール更新を開始します");
-    schedule.setSchedule();
+    void schedule.setSchedule();
     console.info("スケジュール更新が完了しました");
 };
 

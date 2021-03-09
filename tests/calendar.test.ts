@@ -2,6 +2,10 @@ import Calendar from "../src/calendar";
 import {ScheduleObj} from "../src/keyakizaka/keyakiObjects";
 const calendar = new Calendar();
 
+beforeEach(() => {
+    jest.spyOn(console, "info").mockImplementation();
+});
+
 describe("deleteEvent", (): void => {
     it("event.deleteEventが1回呼ばれること", (): void => {
         Utilities.sleep = jest.fn().mockReturnThis();

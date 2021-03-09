@@ -10,7 +10,7 @@ export interface KeyakiCalendarObj {
     calendarId: string
 }
 
-export const getKeyakiCalendarUrl: string = "https://us-central1-augc-260709.cloudfunctions.net/getKeyakiSchedule?date=";
+export const getKeyakiCalendarUrl = process.env.ENV === 'production' ? "https://us-central1-augc-260709.cloudfunctions.net/getKeyakiSchedule?date=": "http://localhost:8080?date=";
 
 export const keyakiCalendarIds: KeyakiCalendarObj[] = [
     {

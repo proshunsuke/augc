@@ -1,32 +1,39 @@
-NODE_MODULUES_BIN_DIR :=  ./node_modules/.bin
-
 setup:
 	$(MAKE) yarn/install
 
-yarn/install:
+install:
 	yarn install
 
-webpack/build:
-	$(NODE_MODULUES_BIN_DIR)/webpack
+build: install
+	yarn webpack
+
+watch:
+	ENV=local yarn webpack watch
+
+server:
+	yarn run functions-framework --target=getKeyakiSchedule --source=./gcpFunctions/getKeyakiSchedule
+
+run/setSchedule:
+	node -e 'require("./dist/index.js");global.setSchedule();'
 
 clasp/login:
-	$(NODE_MODULUES_BIN_DIR)/clasp login
+	yarn clasp login
 
-clasp/push: yarn/install webpack/build
-	$(NODE_MODULUES_BIN_DIR)/clasp push -f
+clasp/push: build
+	yarn clasp push -f
 
 clasp/run:
-	$(NODE_MODULUES_BIN_DIR)/clasp run execute
+	yarn clasp run execute
 
 clasp/open:
-	$(NODE_MODULUES_BIN_DIR)/clasp open
+	yarn clasp open
 
 clasp/logs:
-	$(NODE_MODULUES_BIN_DIR)/clasp logs
+	yarn clasp logs
 
 test:
-	$(NODE_MODULUES_BIN_DIR)/jest
+	ENV=production yarn jest
 
 test/ci:
 	$(MAKE) webpack/build
-	$(NODE_MODULUES_BIN_DIR)/jest --coverage
+	ENV=production yarn jest --coverage

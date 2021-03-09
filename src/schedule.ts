@@ -4,14 +4,14 @@ import dayjs from "dayjs";
 
 export default class Schedule {
 
-    setSchedule(): void {
-        const keyakiSchedule: KeyakiSchedule = new KeyakiSchedule();
-        const beginningOfNexYearMonth: dayjs.Dayjs = dayjs().startOf('month').add(1, 'year');
-        let targetBeginningOfMonth: dayjs.Dayjs = this.getTargetBeginningOfMonth();
-        const startDate: dayjs.Dayjs = dayjs();
+    async setSchedule(): Promise<void> {
+        const keyakiSchedule = new KeyakiSchedule();
+        const beginningOfNexYearMonth = dayjs().startOf('month').add(1, 'year');
+        let targetBeginningOfMonth = this.getTargetBeginningOfMonth();
+        const startDate = dayjs();
 
         while (targetBeginningOfMonth.isBefore(beginningOfNexYearMonth)) {
-            keyakiSchedule.setSchedule(targetBeginningOfMonth);
+            await keyakiSchedule.setSchedule(targetBeginningOfMonth);
             targetBeginningOfMonth = targetBeginningOfMonth.add(1, 'month');
             if (Trigger.hasExceededTerminationMinutes(startDate)) {
                 Trigger.setTrigger(targetBeginningOfMonth);

@@ -10,6 +10,7 @@ describe("execute", (): void => {
         Schedule.mockClear();
         // @ts-ignore
         Trigger.mockClear();
+        jest.spyOn(console, "info").mockImplementation();
     });
     it("createSetScheduleTriggerが呼ばれるとTrigger.setTriggerが1回呼ばれること", (): void => {
         createSetScheduleTrigger();

@@ -7,9 +7,11 @@ import {keyakiCalendarIds} from "../../src/keyakizaka/keyakiObjects";
 jest.mock("../../src/calendar");
 describe("setSchedule", (): void => {
     beforeEach(() => {
-        mocked(Calendar).mockClear()
+        jest.spyOn(console, "error").mockImplementation();
+        jest.spyOn(console, "info").mockImplementation();
+        mocked(Calendar).mockClear();
     });
-    it("dayjsのインスタンスが渡された時に例外が起きずに実行されること", (): void => {
+    it("dayjsのインスタンスが渡された時に例外が起きずに実行されること", async () => {
         // @ts-ignore
         UrlFetchApp.fetch = jest.fn(() => ({
             getContentText: jest.fn(() => getScheduleJson())
@@ -22,15 +24,15 @@ describe("setSchedule", (): void => {
             getEventsForDay: jest.fn(() => [calendarEventMock()])
         }));
 
-        const date: dayjs.Dayjs = dayjs('2019-12-01');
-        const keyakiSchedule: KeyakiSchedule = new KeyakiSchedule();
-        expect(() => {keyakiSchedule.setSchedule(date)}).not.toThrow();
+        const date = dayjs('2019-12-01');
+        const keyakiSchedule = new KeyakiSchedule();
+        await expect(() => { keyakiSchedule.setSchedule(date) }).not.toThrow();
         // @ts-ignore
         expect(Calendar.mock.instances[0].deleteEvent).toBeCalledTimes(keyakiCalendarIds.length * date.endOf('month').date());
         // @ts-ignore
         expect(Calendar.mock.instances[1].createEvent).toBeCalledTimes(JSON.parse(getScheduleJson()).length);
     });
-    it("カレンダーの削除に失敗した場合に例外が起きて後続の処理が止まること", ():void => {
+    it("カレンダーの削除に失敗した場合に例外が起きて後続の処理が止まること", async () => {
         // @ts-ignore
         UrlFetchApp.fetch = jest.fn(() => ({
             getContentText: jest.fn(() => getScheduleJson())
@@ -42,15 +44,15 @@ describe("setSchedule", (): void => {
             }
         });
 
-        const date: dayjs.Dayjs = dayjs('2019-12-01');
-        const keyakiSchedule: KeyakiSchedule = new KeyakiSchedule();
-        expect(() => {keyakiSchedule.setSchedule(date)}).toThrow();
+        const date = dayjs('2019-12-01');
+        const keyakiSchedule = new KeyakiSchedule();
+        await expect(keyakiSchedule.setSchedule(date)).rejects.toThrow();
         // @ts-ignore
         expect(Calendar.mock.instances.length).toBe(1);
         // @ts-ignore
         expect(Calendar.mock.instances[0].createEvent).not.toBeCalled();
     });
-    it("カレンダーの作成に失敗した場合に例外が起きて後続の処理が止まること", ():void => {
+    it("カレンダーの作成に失敗した場合に例外が起きて後続の処理が止まること", async () => {
         // @ts-ignore
         UrlFetchApp.fetch = jest.fn(() => ({
             getContentText: jest.fn(() => getScheduleJson())
@@ -70,9 +72,9 @@ describe("setSchedule", (): void => {
             }
         });
 
-        const date: dayjs.Dayjs = dayjs('2019-12-01');
-        const keyakiSchedule: KeyakiSchedule = new KeyakiSchedule();
-        expect(() => {keyakiSchedule.setSchedule(date)}).toThrow();
+        const date = dayjs('2019-12-01');
+        const keyakiSchedule = new KeyakiSchedule();
+        await expect(keyakiSchedule.setSchedule(date)).rejects.toThrow();
         // @ts-ignore
         expect(Calendar.mock.instances.length).toBe(2);
     });

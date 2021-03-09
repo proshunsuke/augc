@@ -16,5 +16,6 @@
     "https://www.googleapis.com/auth/calendar",
     "https://www.googleapis.com/auth/script.scriptapp"
   ],
-  "exceptionLogging": "STACKDRIVER"
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "V8"
 }

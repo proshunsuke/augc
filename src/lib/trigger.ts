@@ -20,6 +20,7 @@ export default class Trigger {
      * @param {dayjs.Dayjs} targetDate
      */
     static setTrigger(targetDate: dayjs.Dayjs): void {
+        if (process.env.ENV !== 'production') return;
         const properties: GoogleAppsScript.Properties.Properties = PropertiesService.getScriptProperties();
         properties.setProperty(TARGET_DATE_KEY, targetDate.format('YYYY-MM-DD'));
         ScriptApp.newTrigger(TRIGGER_FUNCTION_NAME).timeBased().after(TRIGGER_DURATION).create();
@@ -30,16 +31,19 @@ export default class Trigger {
      * @returns {string | null}
      */
     static getTargetDateProperty(): string | null {
+        if (process.env.ENV !== 'production') return null;
         const properties: GoogleAppsScript.Properties.Properties = PropertiesService.getScriptProperties();
         return properties.getProperty(TARGET_DATE_KEY);
     }
 
     static deleteTargetDateProperty(): void {
+        if (process.env.ENV !== 'production') return;
         const properties: GoogleAppsScript.Properties.Properties = PropertiesService.getScriptProperties();
         properties.deleteProperty(TARGET_DATE_KEY);
     }
 
     static deleteTriggers(): void {
+        if (process.env.ENV !== 'production') return;
         ScriptApp.getProjectTriggers().forEach((trigger: GoogleAppsScript.Script.Trigger) => {
             if (trigger.getHandlerFunction() === TRIGGER_FUNCTION_NAME) {
                 ScriptApp.deleteTrigger(trigger);
