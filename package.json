@@ -24,6 +24,7 @@
     "eslint-config-airbnb-typescript": "*",
     "eslint-config-prettier": "*",
     "eslint-plugin-import": "*",
+    "eslint-plugin-jest": "*",
     "gas-webpack-plugin": "*",
     "jest": "*",
     "jest-fetch-mock": "*",

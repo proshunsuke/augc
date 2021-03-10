@@ -39,14 +39,14 @@ test/ci:
 	ENV=production yarn jest --coverage
 
 lint:
-	yarn eslint "src/**/*.ts"
+	yarn eslint "src/**/*.ts" "tests/**/*.ts"
 
 fix:
 	$(MAKE) fix/prettier
 	$(MAKE) fix/eslint
 
 fix/eslint:
-	yarn eslint "src/**/*.ts" --fix
+	yarn eslint "src/**/*.ts" "tests/**/*.ts" --fix
 
 fix/prettier:
-	yarn prettier --check --write "src/**/*.ts"
+	yarn prettier --check --write "src/**/*.ts" "tests/**/*.ts"

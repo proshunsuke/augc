@@ -10,7 +10,7 @@ module.exports = {
         ecmaVersion: 2018,
         project: ['./tsconfig.eslint.json'],
     },
-    plugins: ['@typescript-eslint'],
+    plugins: ['@typescript-eslint', 'jest'],
     extends: [
         'airbnb-typescript/base',
         'plugin:@typescript-eslint/recommended',
@@ -23,5 +23,6 @@ module.exports = {
         'import/no-extraneous-dependencies': 'off',
         'no-void': ['error', { allowAsStatement: true }],
         'no-console': ['error', { allow: ['info', 'error'] }],
+        '@typescript-eslint/unbound-method': 'off'
     },
 };

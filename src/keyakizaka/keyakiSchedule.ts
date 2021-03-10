@@ -55,9 +55,8 @@ export default class KeyakiSchedule {
     let deleteEventCallCount = 0;
     keyakiCalendarIds.forEach((keyakiCalendarObj: KeyakiCalendarObj) => {
       if (process.env.ENV !== 'production') return;
-      const calendarApp = Retry.retryable(
-        3,
-        () => CalendarApp.getCalendarById(keyakiCalendarObj.calendarId)
+      const calendarApp = Retry.retryable(3, () =>
+        CalendarApp.getCalendarById(keyakiCalendarObj.calendarId)
       );
       const targetDateBeginningOfMonth = date;
       const targetDateBeginningOfNextMonth = date.add(1, 'month');
