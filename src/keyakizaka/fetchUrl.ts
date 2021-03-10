@@ -1,6 +1,7 @@
 import fetch from 'node-fetch';
 
-export default async function fetchUrl(customUrl: string): Promise<string> {
+// eslint-disable-next-line import/prefer-default-export
+export async function fetchUrl(customUrl: string): Promise<string> {
   const response = await fetch(customUrl);
   return response.text();
 }

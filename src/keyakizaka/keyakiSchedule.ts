@@ -40,11 +40,10 @@ export default class KeyakiSchedule {
         UrlFetchApp.fetch(customUrl).getContentText()
       );
     }
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const fetchUrl: (
-      customUrl: string
-      // eslint-disable-next-line @typescript-eslint/no-var-requires,global-require
-    ) => Promise<string> = require('./fetchUrl');
+
+    // eslint-disable-next-line @typescript-eslint/no-var-requires,global-require,@typescript-eslint/no-unsafe-assignment
+    const { fetchUrl } = require('./fetchUrl');
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-return
     return await fetchUrl(customUrl);
   }
 
@@ -56,14 +55,13 @@ export default class KeyakiSchedule {
     let deleteEventCallCount = 0;
     keyakiCalendarIds.forEach((keyakiCalendarObj: KeyakiCalendarObj) => {
       if (process.env.ENV !== 'production') return;
-      const calendarApp: GoogleAppsScript.Calendar.Calendar = Retry.retryable(
+      const calendarApp = Retry.retryable(
         3,
         () => CalendarApp.getCalendarById(keyakiCalendarObj.calendarId)
       );
       const targetDateBeginningOfMonth = date;
       const targetDateBeginningOfNextMonth = date.add(1, 'month');
       let targetDate = targetDateBeginningOfMonth;
-
       while (targetDate.isBefore(targetDateBeginningOfNextMonth)) {
         const events = calendarApp.getEventsForDay(targetDate.toDate());
         // eslint-disable-next-line @typescript-eslint/no-loop-func

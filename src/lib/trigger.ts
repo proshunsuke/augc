@@ -21,7 +21,7 @@ export default class Trigger {
    */
   static setTrigger(targetDate: dayjs.Dayjs): void {
     if (process.env.ENV !== 'production') return;
-    const properties: GoogleAppsScript.Properties.Properties = PropertiesService.getScriptProperties();
+    const properties = PropertiesService.getScriptProperties();
     properties.setProperty(TARGET_DATE_KEY, targetDate.format('YYYY-MM-DD'));
     ScriptApp.newTrigger(TRIGGER_FUNCTION_NAME)
       .timeBased()

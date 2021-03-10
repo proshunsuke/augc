@@ -14,22 +14,23 @@
     "@types/google-apps-script": "*",
     "@types/jest": "*",
     "@types/node": "*",
+    "@types/node-fetch": "*",
     "@typescript-eslint/eslint-plugin": "*",
     "@typescript-eslint/parser": "*",
-    "@types/node-fetch": "*",
-    "eslint": "*",
     "babel-loader": "*",
+    "coveralls": "*",
+    "dayjs": "*",
+    "eslint": "*",
     "eslint-config-airbnb-typescript": "*",
     "eslint-config-prettier": "*",
     "eslint-plugin-import": "*",
-    "coveralls": "*",
-    "dayjs": "*",
     "gas-webpack-plugin": "*",
     "jest": "*",
+    "jest-fetch-mock": "*",
     "mockdate": "*",
     "node-fetch": "*",
-    "puppeteer": "*",
     "prettier": "*",
+    "puppeteer": "*",
     "regenerator-runtime": "*",
     "ts-jest": "*",
     "ts-loader": "*",
@@ -56,6 +57,10 @@
     },
     "testMatch": [
       "**/tests/**/*.test.ts"
+    ],
+    "automock": false,
+    "setupFiles": [
+      "./setupJest.js"
     ]
   }
 }

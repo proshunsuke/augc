@@ -1,9 +1,15 @@
 import MockDate from 'mockdate'
 import Trigger from "../../src/lib/trigger";
-import dayjs = require("dayjs");
+import dayjs from "dayjs";
 
+const OLD_ENV = process.env;
 beforeEach(() => {
     MockDate.set(new Date('2019-12-10'))
+    process.env = { ...OLD_ENV };
+});
+
+afterAll(() => {
+    process.env = OLD_ENV;
 });
 
 describe("hasExceededTerminationMinutes", (): void => {
@@ -41,6 +47,13 @@ describe("setTrigger", (): void => {
         expect(setPropertyMock).toBeCalledWith('target_date', '2019-12-01');
         expect(createMock).toBeCalledTimes(1);
     });
+    it('production環境では無かった場合にPropertiesService.getScriptPropertiesが呼ばれないこと', () => {
+        process.env.ENV = 'local';
+        PropertiesService.getScriptProperties = jest.fn();
+
+        Trigger.setTrigger(dayjs('2019-12-01'));
+        expect(PropertiesService.getScriptProperties).not.toBeCalled();
+    });
 });
 
 describe("getTargetDateProperty", (): void => {
@@ -52,6 +65,13 @@ describe("getTargetDateProperty", (): void => {
         expect(result).toBe('2019-12-01');
         expect(getPropertyMock).toBeCalledTimes(1);
     });
+    it('production環境では無かった場合にPropertiesService.getScriptPropertiesが呼ばれないこと', () => {
+        process.env.ENV = 'local';
+        PropertiesService.getScriptProperties = jest.fn();
+
+        Trigger.getTargetDateProperty();
+        expect(PropertiesService.getScriptProperties).not.toBeCalled();
+    });
 });
 
 describe("deleteTargetDateProperty", (): void => {
@@ -61,6 +81,13 @@ describe("deleteTargetDateProperty", (): void => {
         PropertiesService.getScriptProperties = jest.fn(() => ({deleteProperty: deletePropertyMock}));
         Trigger.deleteTargetDateProperty();
         expect(deletePropertyMock).toBeCalledTimes(1);
+    });
+    it('production環境では無かった場合にPropertiesService.getScriptPropertiesが呼ばれないこと', () => {
+        process.env.ENV = 'local';
+        PropertiesService.getScriptProperties = jest.fn();
+
+        Trigger.deleteTargetDateProperty();
+        expect(PropertiesService.getScriptProperties).not.toBeCalled();
     });
 });
 
@@ -81,5 +108,12 @@ describe("deleteTriggers", (): void => {
         ScriptApp.deleteTrigger = jest.fn().mockReturnThis();
         Trigger.deleteTriggers();
         expect(ScriptApp.deleteTrigger).toBeCalledTimes(2);
+    });
+    it('production環境では無かった場合にScriptApp.getProjectTriggersが呼ばれないこと', () => {
+        process.env.ENV = 'local';
+        ScriptApp.getProjectTriggers = jest.fn();
+
+        Trigger.deleteTriggers();
+        expect(ScriptApp.getProjectTriggers).not.toBeCalled();
     });
 });
