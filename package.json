@@ -10,7 +10,7 @@
     "@babel/preset-env": "*",
     "@babel/preset-typescript": "*",
     "@google-cloud/functions-framework": "*",
-    "@google/clasp": "*",
+    "forked-clasp": "*",
     "@types/google-apps-script": "*",
     "@types/jest": "*",
     "@types/node": "*",
