@@ -22,7 +22,7 @@
     "jest": "*",
     "mockdate": "*",
     "node-fetch": "*",
-    "puppeteer": "^8.0.0",
+    "puppeteer": "*",
     "regenerator-runtime": "*",
     "ts-jest": "*",
     "ts-loader": "*",

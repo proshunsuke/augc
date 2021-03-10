@@ -9,9 +9,21 @@ const babelLoader = {
     }
 }
 
+const plugins = [
+    new GasPlugin(),
+    new webpack.EnvironmentPlugin({
+        ENV: process.env.ENV || 'production'
+    })
+];
+
+if (process.env.ENV === 'production') {
+    plugins.push(
+        new webpack.IgnorePlugin({resourceRegExp: /scheduleJson/,})
+    );
+}
+
 module.exports = {
-    mode: 'development',
-    // devtool: process.env.ENV === 'production' ? false : 'inline-source-map',
+    mode: 'development', // GasPluginを使用する場合はproductionにすると動作しないのでdevelopment固定
     entry: {
         main: path.resolve(__dirname, 'src', 'index.ts')
     },
@@ -40,14 +52,6 @@ module.exports = {
             },
         ]
     },
-    plugins: [
-        new GasPlugin(),
-        new webpack.EnvironmentPlugin({
-            ENV: process.env.ENV || 'production'
-        })
-    ],
-    externals: {
-        puppeteer: 'require("puppeteer")',
-    },
-    target: 'node',
+    plugins: plugins,
+    target: process.env.ENV === 'production' ? 'web' : 'node'
 };

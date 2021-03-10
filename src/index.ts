@@ -22,10 +22,10 @@ global.createSetScheduleTrigger = (e: any) => {
  *
  * @param e
  */
-global.setSchedule = (e: any) => {
+global.setSchedule = async (e: any) => {
     const schedule = new Schedule();
     console.info("スケジュール更新を開始します");
-    void schedule.setSchedule();
+    await schedule.setSchedule();
     console.info("スケジュール更新が完了しました");
 };
 

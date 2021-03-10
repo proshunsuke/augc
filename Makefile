@@ -5,7 +5,7 @@ install:
 	yarn install
 
 build: install
-	yarn webpack
+	ENV=production yarn webpack
 
 watch:
 	ENV=local yarn webpack watch
@@ -16,19 +16,19 @@ server:
 run/setSchedule:
 	node -e 'require("./dist/index.js");global.setSchedule();'
 
-clasp/login:
+login:
 	yarn clasp login
 
-clasp/push: build
+push: build
 	yarn clasp push -f
 
-clasp/run:
+run:
 	yarn clasp run execute
 
-clasp/open:
+open:
 	yarn clasp open
 
-clasp/logs:
+logs:
 	yarn clasp logs
 
 test:

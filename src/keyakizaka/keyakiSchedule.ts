@@ -2,7 +2,6 @@ import dayjs from "dayjs";
 import Calendar from "../calendar";
 import {ScheduleObj, KeyakiCalendarObj, getKeyakiCalendarUrl, keyakiCalendarIds} from "./keyakiObjects";
 import Retry from "../lib/retry";
-import fetch, { Response } from 'node-fetch';
 import 'regenerator-runtime';
 
 export default class KeyakiSchedule {
@@ -14,7 +13,6 @@ export default class KeyakiSchedule {
         const customUrl: string = getKeyakiCalendarUrl + date.format('YYYYMMDD');
 
         const scheduleJson = await this.getScheduleJson(customUrl);
-        // console.log(scheduleJson);
 
         const scheduleList: ScheduleObj[] = JSON.parse(scheduleJson);
 
@@ -25,7 +23,7 @@ export default class KeyakiSchedule {
     };
 
     /**
-     *
+     * 
      * @param {string} customUrl
      * @returns {Promise<any>}
      * @private
@@ -36,8 +34,8 @@ export default class KeyakiSchedule {
                 return UrlFetchApp.fetch(customUrl).getContentText();
             });
         } else {
-            const response = await fetch(customUrl);
-            return response.text();
+            const { fetchUrl } = require('./fetchUrl');
+            return fetchUrl(customUrl);
         }
     }
 
