@@ -1,12 +1,29 @@
 const path = require('path');
 const GasPlugin = require('gas-webpack-plugin');
-const Es3ifyPlugin = require('es3ify-webpack-plugin');
 const webpack = require('webpack');
 
+const babelLoader = {
+    loader: 'babel-loader',
+    options: {
+        presets: ['@babel/preset-env']
+    }
+}
+
+const plugins = [
+    new GasPlugin(),
+    new webpack.EnvironmentPlugin({
+        ENV: process.env.ENV || 'production'
+    })
+];
+
+if (process.env.ENV === 'production') {
+    plugins.push(
+        new webpack.IgnorePlugin({resourceRegExp: /scheduleJson/,})
+    );
+}
+
 module.exports = {
-    mode: 'development',
-    devtool: 'inline-source-map',
-    context: __dirname,
+    mode: 'development', // GasPluginを使用する場合はproductionにすると動作しないのでdevelopment固定
     entry: {
         main: path.resolve(__dirname, 'src', 'index.ts')
     },
@@ -21,14 +38,20 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.[tj]s$/,
-                loader: 'babel-loader'
-            }
+                test: /\.js$/,
+                use: [babelLoader]
+            },
+            {
+                test: /\.ts$/,
+                use: [
+                    babelLoader,
+                    {
+                        loader: 'ts-loader',
+                    },
+                ],
+            },
         ]
     },
-    plugins: [
-        new GasPlugin(),
-        new Es3ifyPlugin(),
-        // new webpack.IgnorePlugin(/jsdom$/)
-    ]
+    plugins: plugins,
+    target: process.env.ENV === 'production' ? 'web' : 'node'
 };

@@ -1,32 +1,52 @@
-NODE_MODULUES_BIN_DIR :=  ./node_modules/.bin
-
 setup:
 	$(MAKE) yarn/install
 
-yarn/install:
+install:
 	yarn install
 
-webpack/build:
-	$(NODE_MODULUES_BIN_DIR)/webpack
+build: install
+	ENV=production yarn webpack
 
-clasp/login:
-	$(NODE_MODULUES_BIN_DIR)/clasp login
+watch:
+	ENV=local yarn webpack watch
 
-clasp/push: yarn/install webpack/build
-	$(NODE_MODULUES_BIN_DIR)/clasp push -f
+server:
+	yarn run functions-framework --target=getKeyakiSchedule --source=./gcpFunctions/getKeyakiSchedule
 
-clasp/run:
-	$(NODE_MODULUES_BIN_DIR)/clasp run execute
+run/setSchedule:
+	node -e 'require("./dist/index.js");global.setSchedule();'
 
-clasp/open:
-	$(NODE_MODULUES_BIN_DIR)/clasp open
+login:
+	yarn clasp login
 
-clasp/logs:
-	$(NODE_MODULUES_BIN_DIR)/clasp logs
+push: build
+	yarn clasp push -f
+
+run:
+	yarn clasp run execute
+
+open:
+	yarn clasp open
+
+logs:
+	yarn clasp logs
 
 test:
-	$(NODE_MODULUES_BIN_DIR)/jest
+	ENV=production yarn jest
 
 test/ci:
-	$(MAKE) webpack/build
-	$(NODE_MODULUES_BIN_DIR)/jest --coverage
+	$(MAKE) build
+	ENV=production yarn jest --coverage
+
+lint:
+	yarn eslint "src/**/*.ts" "tests/**/*.ts"
+
+fix:
+	$(MAKE) fix/prettier
+	$(MAKE) fix/eslint
+
+fix/eslint:
+	yarn eslint "src/**/*.ts" "tests/**/*.ts" --fix
+
+fix/prettier:
+	yarn prettier --check --write "src/**/*.ts" "tests/**/*.ts"

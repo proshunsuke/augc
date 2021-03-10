@@ -7,36 +7,48 @@
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "*",
-    "@babel/plugin-proposal-class-properties": "*",
     "@babel/preset-env": "*",
     "@babel/preset-typescript": "*",
+    "@google-cloud/functions-framework": "*",
     "@google/clasp": "*",
     "@types/google-apps-script": "*",
     "@types/jest": "*",
+    "@types/node": "*",
+    "@types/node-fetch": "*",
+    "@typescript-eslint/eslint-plugin": "*",
+    "@typescript-eslint/parser": "*",
     "babel-loader": "*",
-    "core-js": "*",
     "coveralls": "*",
     "dayjs": "*",
-    "es3ify-webpack-plugin": "*",
+    "eslint": "*",
+    "eslint-config-airbnb-typescript": "*",
+    "eslint-config-prettier": "*",
+    "eslint-plugin-import": "*",
+    "eslint-plugin-jest": "*",
     "gas-webpack-plugin": "*",
     "jest": "*",
+    "jest-fetch-mock": "*",
     "mockdate": "*",
+    "node-fetch": "*",
+    "prettier": "*",
+    "puppeteer": "*",
+    "regenerator-runtime": "*",
     "ts-jest": "*",
-    "tslint": "*",
+    "ts-loader": "*",
     "webpack": "*",
     "webpack-cli": "*"
   },
   "jest": {
     "moduleFileExtensions": [
-      "ts",
-      "js"
+      "js",
+      "ts"
     ],
     "transform": {
       "^.+\\.ts$": "ts-jest"
     },
     "globals": {
       "ts-jest": {
-        "tsConfig": "tsconfig.json"
+        "tsconfig": "tsconfig.json"
       },
       "CalendarApp": {},
       "UrlFetchApp": {},
@@ -46,6 +58,10 @@
     },
     "testMatch": [
       "**/tests/**/*.test.ts"
+    ],
+    "automock": false,
+    "setupFiles": [
+      "./setupJest.js"
     ]
   }
 }
