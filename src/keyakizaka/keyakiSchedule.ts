@@ -1,94 +1,118 @@
-import dayjs from "dayjs";
-import Calendar from "../calendar";
-import {ScheduleObj, KeyakiCalendarObj, getKeyakiCalendarUrl, keyakiCalendarIds} from "./keyakiObjects";
-import Retry from "../lib/retry";
+import dayjs from 'dayjs';
+import Calendar from '../calendar';
+import {
+  ScheduleObj,
+  KeyakiCalendarObj,
+  getKeyakiCalendarUrl,
+  keyakiCalendarIds,
+} from './keyakiObjects';
+import Retry from '../lib/retry';
 import 'regenerator-runtime';
 
 export default class KeyakiSchedule {
-    /**
-     *
-     * @param {dayjs.Dayjs} date
-     */
-    async setSchedule(date: dayjs.Dayjs): Promise<void> {
-        const customUrl: string = getKeyakiCalendarUrl + date.format('YYYYMMDD');
+  /**
+   *
+   * @param {dayjs.Dayjs} date
+   * @returns {Promise<void>}
+   */
+  static async setSchedule(date: dayjs.Dayjs): Promise<void> {
+    const customUrl: string = getKeyakiCalendarUrl + date.format('YYYYMMDD');
 
-        const scheduleJson = await this.getScheduleJson(customUrl);
+    const scheduleJson = await KeyakiSchedule.getScheduleJson(customUrl);
 
-        const scheduleList: ScheduleObj[] = JSON.parse(scheduleJson);
+    const scheduleList = JSON.parse(scheduleJson) as ScheduleObj[];
 
-        console.info(date.format('YYYY年MM月') + "分の予定を更新します");
-        this.delete1MonthCalendarEvents(date);
-        this.create1MonthEvents(scheduleList, date);
-        console.info(date.format('YYYY年MM月') + "分の予定を更新しました");
-    };
+    console.info(`${date.format('YYYY年MM月')}分の予定を更新します`);
+    KeyakiSchedule.delete1MonthCalendarEvents(date);
+    KeyakiSchedule.create1MonthEvents(scheduleList, date);
+    console.info(`${date.format('YYYY年MM月')}分の予定を更新しました`);
+  }
 
-    /**
-     * 
-     * @param {string} customUrl
-     * @returns {Promise<any>}
-     * @private
-     */
-    private async getScheduleJson(customUrl: string) {
-        if (process.env.ENV === 'production') {
-            return Retry.retryable(3,  () => {
-                return UrlFetchApp.fetch(customUrl).getContentText();
-            });
-        } else {
-            const { fetchUrl } = require('./fetchUrl');
-            return fetchUrl(customUrl);
-        }
+  /**
+   *
+   * @param {string} customUrl
+   * @returns {Promise<any>}
+   * @private
+   */
+  private static async getScheduleJson(customUrl: string): Promise<string> {
+    if (process.env.ENV === 'production') {
+      return Retry.retryable<string>(3, () =>
+        UrlFetchApp.fetch(customUrl).getContentText()
+      );
     }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const fetchUrl: (
+      customUrl: string
+      // eslint-disable-next-line @typescript-eslint/no-var-requires,global-require
+    ) => Promise<string> = require('./fetchUrl');
+    return await fetchUrl(customUrl);
+  }
 
-    /**
-     *
-     * @param {dayjs.Dayjs} date
-     */
-    private delete1MonthCalendarEvents(date: dayjs.Dayjs) {
-        const calendar = new Calendar();
-        let deleteEventCallCount: number = 0;
-        keyakiCalendarIds.forEach((keyakiCalendarObj: KeyakiCalendarObj) => {
-            if (process.env.ENV !== 'production') return;
-            const calendarApp: GoogleAppsScript.Calendar.Calendar = Retry.retryable(3, () => {
-                return CalendarApp.getCalendarById(keyakiCalendarObj.calendarId);
-            });
-            const targetDateBeginningOfMonth = date;
-            const targetDateBeginningOfNextMonth = date.add(1, 'month');
-            let targetDate = targetDateBeginningOfMonth;
+  /**
+   *
+   * @param {dayjs.Dayjs} date
+   */
+  private static delete1MonthCalendarEvents(date: dayjs.Dayjs) {
+    let deleteEventCallCount = 0;
+    keyakiCalendarIds.forEach((keyakiCalendarObj: KeyakiCalendarObj) => {
+      if (process.env.ENV !== 'production') return;
+      const calendarApp: GoogleAppsScript.Calendar.Calendar = Retry.retryable(
+        3,
+        () => CalendarApp.getCalendarById(keyakiCalendarObj.calendarId)
+      );
+      const targetDateBeginningOfMonth = date;
+      const targetDateBeginningOfNextMonth = date.add(1, 'month');
+      let targetDate = targetDateBeginningOfMonth;
 
-            while (targetDate.isBefore(targetDateBeginningOfNextMonth)) {
-                const events = calendarApp.getEventsForDay(targetDate.toDate());
-                events.forEach((event) => {
-                    deleteEventCallCount++;
-                    try {
-                        calendar.deleteEvent(event);
-                    } catch (e) {
-                        console.error("カレンダー削除に失敗しました。失敗するまでに実行された回数: " + deleteEventCallCount.toString());
-                        throw e;
-                    }
-                });
-                targetDate = targetDate.add(1, 'day');
-            }
+      while (targetDate.isBefore(targetDateBeginningOfNextMonth)) {
+        const events = calendarApp.getEventsForDay(targetDate.toDate());
+        // eslint-disable-next-line @typescript-eslint/no-loop-func
+        events.forEach((event) => {
+          deleteEventCallCount += 1;
+          try {
+            Calendar.deleteEvent(event);
+          } catch (e) {
+            console.error(
+              `カレンダー削除に失敗しました。失敗するまでに実行された回数: ${deleteEventCallCount.toString()}`
+            );
+            throw e;
+          }
         });
-        console.info(date.format("YYYY年MM月") + "分のカレンダー削除実行回数" + deleteEventCallCount.toString());
-    }
+        targetDate = targetDate.add(1, 'day');
+      }
+    });
+    console.info(
+      `${date.format(
+        'YYYY年MM月'
+      )}分のカレンダー削除実行回数${deleteEventCallCount.toString()}`
+    );
+  }
 
-    /**
-     *
-     * @param {ScheduleObj[]} scheduleList
-     * @param {dayjs.Dayjs} date
-     */
-    private create1MonthEvents(scheduleList: ScheduleObj[], date: dayjs.Dayjs) {
-        const calendar = new Calendar();
-        let createEventCallCount: number = 0;
-        scheduleList.forEach((schedule: ScheduleObj) => {
-            createEventCallCount++;
-            try {
-                calendar.createEvent(schedule);
-            } catch (e) {
-                console.error("カレンダー作成に失敗しました。失敗するまでに実行された回数: " + createEventCallCount.toString());
-                throw e;
-            }
-        });
-        console.info(date.format("YYYY年MM月") +"分のカレンダー作成実行回数: " + createEventCallCount.toString());
-    }
+  /**
+   *
+   * @param {ScheduleObj[]} scheduleList
+   * @param {dayjs.Dayjs} date
+   */
+  private static create1MonthEvents(
+    scheduleList: ScheduleObj[],
+    date: dayjs.Dayjs
+  ) {
+    let createEventCallCount = 0;
+    scheduleList.forEach((schedule: ScheduleObj) => {
+      createEventCallCount += 1;
+      try {
+        Calendar.createEvent(schedule);
+      } catch (e) {
+        console.error(
+          `カレンダー作成に失敗しました。失敗するまでに実行された回数: ${createEventCallCount.toString()}`
+        );
+        throw e;
+      }
+    });
+    console.info(
+      `${date.format(
+        'YYYY年MM月'
+      )}分のカレンダー作成実行回数: ${createEventCallCount.toString()}`
+    );
+  }
 }

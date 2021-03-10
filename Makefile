@@ -37,3 +37,16 @@ test:
 test/ci:
 	$(MAKE) build
 	ENV=production yarn jest --coverage
+
+lint:
+	yarn eslint "src/**/*.ts"
+
+fix:
+	$(MAKE) fix/prettier
+	$(MAKE) fix/eslint
+
+fix/eslint:
+	yarn eslint "src/**/*.ts" --fix
+
+fix/prettier:
+	yarn prettier --check --write "src/**/*.ts"

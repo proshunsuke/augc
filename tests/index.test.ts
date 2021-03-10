@@ -6,11 +6,8 @@ jest.mock("../src/schedule");
 jest.mock("../src/lib/trigger");
 describe("execute", (): void => {
     beforeEach(() => {
-        // @ts-ignore
-        Schedule.mockClear();
-        // @ts-ignore
-        Trigger.mockClear();
         jest.spyOn(console, "info").mockImplementation();
+        jest.resetAllMocks();
     });
     it("createSetScheduleTriggerが呼ばれるとTrigger.setTriggerが1回呼ばれること", (): void => {
         createSetScheduleTrigger();
@@ -19,6 +16,6 @@ describe("execute", (): void => {
     it("setScheduleが呼ばれるとschedule.setScheduleが1回呼ばれること", (): void => {
         setSchedule();
         // @ts-ignore
-        expect(Schedule.mock.instances[0].setSchedule).toBeCalledTimes(1);
+        expect(Schedule.setSchedule).toBeCalledTimes(1);
     })
 });

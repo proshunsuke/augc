@@ -2,14 +2,13 @@ import dayjs from "dayjs";
 
 import KeyakiSchedule from "../../src/keyakizaka/keyakiSchedule";
 import Calendar from "../../src/calendar";
-import { mocked } from "ts-jest/utils";
 import {keyakiCalendarIds} from "../../src/keyakizaka/keyakiObjects";
 jest.mock("../../src/calendar");
 describe("setSchedule", (): void => {
     beforeEach(() => {
         jest.spyOn(console, "error").mockImplementation();
         jest.spyOn(console, "info").mockImplementation();
-        mocked(Calendar).mockClear();
+        jest.resetAllMocks();
     });
     it("dayjsのインスタンスが渡された時に例外が起きずに実行されること", async () => {
         // @ts-ignore
@@ -25,12 +24,11 @@ describe("setSchedule", (): void => {
         }));
 
         const date = dayjs('2019-12-01');
-        const keyakiSchedule = new KeyakiSchedule();
-        await expect(() => { keyakiSchedule.setSchedule(date) }).not.toThrow();
+        await expect(() => { KeyakiSchedule.setSchedule(date) }).not.toThrow();
         // @ts-ignore
-        expect(Calendar.mock.instances[0].deleteEvent).toBeCalledTimes(keyakiCalendarIds.length * date.endOf('month').date());
+        expect(Calendar.deleteEvent).toBeCalledTimes(keyakiCalendarIds.length * date.endOf('month').date());
         // @ts-ignore
-        expect(Calendar.mock.instances[1].createEvent).toBeCalledTimes(JSON.parse(getScheduleJson()).length);
+        expect(Calendar.createEvent).toBeCalledTimes(JSON.parse(getScheduleJson()).length);
     });
     it("カレンダーの削除に失敗した場合に例外が起きて後続の処理が止まること", async () => {
         // @ts-ignore
@@ -38,19 +36,12 @@ describe("setSchedule", (): void => {
             getContentText: jest.fn(() => getScheduleJson())
         }));
 
-        mocked(Calendar).mockImplementation((): any => {
-            return {
-                deleteEvent: (): void => {throw Error()}
-            }
-        });
+        Calendar.deleteEvent = jest.fn(() => { throw Error() });
 
         const date = dayjs('2019-12-01');
-        const keyakiSchedule = new KeyakiSchedule();
-        await expect(keyakiSchedule.setSchedule(date)).rejects.toThrow();
+        await expect(KeyakiSchedule.setSchedule(date)).rejects.toThrow();
         // @ts-ignore
-        expect(Calendar.mock.instances.length).toBe(1);
-        // @ts-ignore
-        expect(Calendar.mock.instances[0].createEvent).not.toBeCalled();
+        expect(Calendar.createEvent).not.toBeCalled();
     });
     it("カレンダーの作成に失敗した場合に例外が起きて後続の処理が止まること", async () => {
         // @ts-ignore
@@ -65,18 +56,11 @@ describe("setSchedule", (): void => {
             getEventsForDay: jest.fn(() => [calendarEventMock()])
         }));
 
-        mocked(Calendar).mockImplementation((): any => {
-            return {
-                deleteEvent: (): void => {return},
-                createEvent: (): void => {throw Error()}
-            }
-        });
+        Calendar.deleteEvent = jest.fn(() => { return; });
+        Calendar.createEvent = jest.fn(() => { throw Error(); });
 
         const date = dayjs('2019-12-01');
-        const keyakiSchedule = new KeyakiSchedule();
-        await expect(keyakiSchedule.setSchedule(date)).rejects.toThrow();
-        // @ts-ignore
-        expect(Calendar.mock.instances.length).toBe(2);
+        await expect(KeyakiSchedule.setSchedule(date)).rejects.toThrow();
     });
 })
 ;

@@ -1,6 +1,5 @@
 import Calendar from "../src/calendar";
 import {ScheduleObj} from "../src/keyakizaka/keyakiObjects";
-const calendar = new Calendar();
 
 beforeEach(() => {
     jest.spyOn(console, "info").mockImplementation();
@@ -12,7 +11,7 @@ describe("deleteEvent", (): void => {
 
         const deleteEventMock = jest.fn().mockReturnThis();
         const calendarEventMock: jest.Mock<any, any> = jest.fn(() => ({deleteEvent: deleteEventMock}));
-        calendar.deleteEvent(calendarEventMock());
+        Calendar.deleteEvent(calendarEventMock());
         expect(deleteEventMock).toBeCalledTimes(1);
     });
 });
@@ -26,14 +25,14 @@ describe("createEvent", (): void => {
             // @ts-ignore
             CalendarApp.getCalendarById = jest.fn(() => ({createAllDayEvent: createAllDayEventMock}));
             Utilities.sleep = jest.fn().mockReturnThis();
-            calendar.createEvent(schedule);
+            Calendar.createEvent(schedule);
             expect(createAllDayEventMock).toBeCalledTimes(1);
         });
     });
     describe("存在しない種類の予定の場合", (): void => {
         const schedule = defaultSchedule({className: 'none'});
         it("例外が投げられること", (): void => {
-            expect(() => {calendar.createEvent(schedule)}).toThrow("存在しない種類のスケジュールです。className: none");
+            expect(() => {Calendar.createEvent(schedule)}).toThrow("存在しない種類のスケジュールです。className: none");
         })
     })
 });
