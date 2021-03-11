@@ -4,16 +4,15 @@ import Trigger, { TERMINATION_MINUTES } from '../lib/trigger';
 import { SiteCalendarInterface } from '../calendarInterface';
 
 export interface SiteScheduleInterface {
-  setSiteSchedule(): Promise<void>;
+  setSiteSchedule(startDate: dayjs.Dayjs): Promise<void>;
   siteCalendarUrl(): string;
   siteCalendarIds(): SiteCalendarInterface[];
 }
 
 export default abstract class SiteSchedule implements SiteScheduleInterface {
-  async setSiteSchedule(): Promise<void> {
+  async setSiteSchedule(startDate: dayjs.Dayjs): Promise<void> {
     const beginningOfNexYearMonth = dayjs().startOf('month').add(1, 'year');
     let targetBeginningOfMonth = SiteSchedule.getTargetBeginningOfMonth();
-    const startDate = dayjs();
 
     while (targetBeginningOfMonth.isBefore(beginningOfNexYearMonth)) {
       // eslint-disable-next-line no-await-in-loop

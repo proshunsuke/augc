@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import MockDate from 'mockdate';
 import Schedule from '../src/schedule';
 import OneMonthSchedule from '../src/oneMonthSchedule';
@@ -12,12 +13,12 @@ describe('setSchedule', (): void => {
     jest.resetAllMocks();
   });
   it('setScheduleが24回呼ばれ各サイト1年分の予定が作成されること', async () => {
-    await Schedule.setSchedule();
+    await Schedule.setSchedule(dayjs());
     expect(OneMonthSchedule.setSchedule).toBeCalledTimes(24);
   });
   it('propertiesに日付がセットされていた場合にその日付からスケジュール登録が始まること', async () => {
     Trigger.getTargetDateProperty = jest.fn().mockReturnValueOnce('2020-01-01');
-    await Schedule.setSchedule();
+    await Schedule.setSchedule(dayjs());
     expect(OneMonthSchedule.setSchedule).toBeCalledTimes(23);
   });
   it('実行時間が指定時間を過ぎていたらトリガーがセットされ処理が終わること', async () => {
@@ -26,7 +27,7 @@ describe('setSchedule', (): void => {
       .mockReturnValueOnce(false)
       .mockReturnValue(true);
     Trigger.setTrigger = jest.fn().mockReturnThis();
-    await Schedule.setSchedule();
+    await Schedule.setSchedule(dayjs());
     expect(OneMonthSchedule.setSchedule).toBeCalledTimes(3);
     expect(Trigger.setTrigger).toBeCalledTimes(2);
   });
@@ -35,7 +36,7 @@ describe('setSchedule', (): void => {
     Trigger.setTrigger = jest.fn().mockReturnThis();
     Trigger.deleteTargetDateProperty = jest.fn().mockReturnThis();
     Trigger.deleteTriggers = jest.fn().mockReturnThis();
-    await Schedule.setSchedule();
+    await Schedule.setSchedule(dayjs());
     expect(OneMonthSchedule.setSchedule).toBeCalledTimes(24);
     expect(Trigger.setTrigger).not.toBeCalled();
     expect(Trigger.deleteTargetDateProperty).toBeCalledTimes(2);

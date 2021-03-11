@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import MockDate from 'mockdate';
 import KeyakiSiteSchedule from '../../../src/sites/keyakizaka/keyakiSiteSchedule';
 import OneMonthSchedule from '../../../src/oneMonthSchedule';
@@ -12,7 +13,7 @@ describe('setSiteSchedule', (): void => {
   });
   it('setScheduleが12回呼ばれ1年分の予定が作成されること', async () => {
     const keyakiSiteSchedule = new KeyakiSiteSchedule();
-    await keyakiSiteSchedule.setSiteSchedule();
+    await keyakiSiteSchedule.setSiteSchedule(dayjs());
     expect(OneMonthSchedule.setSchedule).toBeCalledTimes(12);
   });
 });
