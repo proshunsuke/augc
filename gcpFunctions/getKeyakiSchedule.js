@@ -15,7 +15,15 @@ exports.getKeyakiSchedule = async (req, res) => {
 
     await page.goto('https://www.keyakizaka46.com/s/k46o/media/list?dy=' + req.query['date']);
 
-    const result = await page.evaluate("scheduleEvents");
+    const response = await page.evaluate("scheduleEvents");
+
+    const result = response.map((scheduleEvent) => {
+        return {
+            title: scheduleEvent.title,
+            date: scheduleEvent.start,
+            type: scheduleEvent.className
+        }
+    });
 
     res.send(result);
 };

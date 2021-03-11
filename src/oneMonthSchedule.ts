@@ -1,30 +1,30 @@
 import dayjs from 'dayjs';
-import Calendar from '../calendar';
+import Calendar from './calendar';
 import {
-  ScheduleObj,
-  KeyakiCalendarObj,
-  getKeyakiCalendarUrl,
-  keyakiCalendarIds,
-} from './keyakiObjects';
-import Retry from '../lib/retry';
+  ScheduleInterface,
+  SiteCalendarInterface,
+} from './calendarInterface';
+import Retry from './lib/retry';
 import 'regenerator-runtime';
 
-export default class KeyakiSchedule {
+export default class OneMonthSchedule {
   /**
    *
    * @param {dayjs.Dayjs} date
+   * @param calendarUrl
+   * @param siteCalendarIds
    * @returns {Promise<void>}
    */
-  static async setSchedule(date: dayjs.Dayjs): Promise<void> {
-    const customUrl: string = getKeyakiCalendarUrl + date.format('YYYYMMDD');
+  static async setSchedule(date: dayjs.Dayjs, calendarUrl: string, siteCalendarIds: SiteCalendarInterface[]): Promise<void> {
+    const customUrl: string = calendarUrl + date.format('YYYYMMDD');
 
-    const scheduleJson = await KeyakiSchedule.getScheduleJson(customUrl);
+    const scheduleJson = await OneMonthSchedule.getScheduleJson(customUrl);
 
-    const scheduleList = JSON.parse(scheduleJson) as ScheduleObj[];
+    const scheduleList = JSON.parse(scheduleJson) as ScheduleInterface[];
 
     console.info(`${date.format('YYYY年MM月')}分の予定を更新します`);
-    KeyakiSchedule.delete1MonthCalendarEvents(date);
-    KeyakiSchedule.create1MonthEvents(scheduleList, date);
+    OneMonthSchedule.delete1MonthCalendarEvents(date, siteCalendarIds);
+    OneMonthSchedule.create1MonthEvents(scheduleList, date, siteCalendarIds);
     console.info(`${date.format('YYYY年MM月')}分の予定を更新しました`);
   }
 
@@ -50,13 +50,14 @@ export default class KeyakiSchedule {
   /**
    *
    * @param {dayjs.Dayjs} date
+   * @param siteCalendarIds
    */
-  private static delete1MonthCalendarEvents(date: dayjs.Dayjs) {
+  private static delete1MonthCalendarEvents(date: dayjs.Dayjs, siteCalendarIds: SiteCalendarInterface[]) {
     let deleteEventCallCount = 0;
-    keyakiCalendarIds.forEach((keyakiCalendarObj: KeyakiCalendarObj) => {
+    siteCalendarIds.forEach((siteCalendarId) => {
       if (process.env.ENV !== 'production') return;
       const calendarApp = Retry.retryable(3, () =>
-        CalendarApp.getCalendarById(keyakiCalendarObj.calendarId)
+        CalendarApp.getCalendarById(siteCalendarId.calendarId)
       );
       const targetDateBeginningOfMonth = date;
       const targetDateBeginningOfNextMonth = date.add(1, 'month');
@@ -87,18 +88,20 @@ export default class KeyakiSchedule {
 
   /**
    *
-   * @param {ScheduleObj[]} scheduleList
+   * @param {ScheduleInterface[]} scheduleList
    * @param {dayjs.Dayjs} date
+   * @param calendarIds
    */
   private static create1MonthEvents(
-    scheduleList: ScheduleObj[],
-    date: dayjs.Dayjs
+    scheduleList: ScheduleInterface[],
+    date: dayjs.Dayjs,
+    calendarIds: SiteCalendarInterface[]
   ) {
     let createEventCallCount = 0;
-    scheduleList.forEach((schedule: ScheduleObj) => {
+    scheduleList.forEach((schedule: ScheduleInterface) => {
       createEventCallCount += 1;
       try {
-        Calendar.createEvent(schedule);
+        Calendar.createEvent(schedule, calendarIds);
       } catch (e) {
         console.error(
           `カレンダー作成に失敗しました。失敗するまでに実行された回数: ${createEventCallCount.toString()}`

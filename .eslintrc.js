@@ -18,11 +18,12 @@ module.exports = {
         'prettier',
     ],
     rules: {
-        quotes: ['error', 'single', { 'avoidEscape': true, 'allowTemplateLiterals': false }],
+        quotes: ['error', 'single', {'avoidEscape': true, 'allowTemplateLiterals': false}],
         semi: ['error', 'always'],
         'import/no-extraneous-dependencies': 'off',
-        'no-void': ['error', { allowAsStatement: true }],
-        'no-console': ['error', { allow: ['info', 'error'] }],
-        '@typescript-eslint/unbound-method': 'off'
+        'no-void': ['error', {allowAsStatement: true}],
+        'no-console': ['error', {allow: ['info', 'error']}],
+        '@typescript-eslint/unbound-method': 'off',
+        'no-restricted-syntax': ['error', {allow: ['ForOfStatement']}]
     },
 };
