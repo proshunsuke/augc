@@ -2,7 +2,10 @@ import dayjs from 'dayjs';
 import fetchMock from 'jest-fetch-mock';
 import OneMonthSchedule from '../src/oneMonthSchedule';
 import Calendar from '../src/calendar';
-import {getKeyakiCalendarUrl, keyakiCalendarIds} from '../src/sites/keyakizaka/keyakiObjects';
+import {
+  getKeyakiCalendarUrl,
+  keyakiCalendarIds,
+} from '../src/sites/keyakizaka/keyakiObjects';
 
 function getScheduleJson() {
   return '[{"title":"欅坂46 こちら有楽町星空放送局","start":"2019-12-01","className":"media","description":"欅坂46 こちら有楽町星空放送局"},{"title":"テレビ東京「欅って、書けない?」","start":"2019-12-01","className":"media","description":"テレビ東京「欅って、書けない?」"}]';
@@ -35,7 +38,13 @@ describe('setSchedule', () => {
     })) as jest.Mock;
 
     const date = dayjs('2019-12-01');
-    await expect(OneMonthSchedule.setSchedule(date, getKeyakiCalendarUrl, keyakiCalendarIds)).resolves.not.toThrow();
+    await expect(
+      OneMonthSchedule.setSchedule(
+        date,
+        getKeyakiCalendarUrl,
+        keyakiCalendarIds
+      )
+    ).resolves.not.toThrow();
     expect(Calendar.deleteEvent).toBeCalledTimes(
       keyakiCalendarIds.length * date.endOf('month').date()
     );
@@ -61,7 +70,13 @@ describe('setSchedule', () => {
     });
 
     const date = dayjs('2019-12-01');
-    await expect(OneMonthSchedule.setSchedule(date, getKeyakiCalendarUrl, keyakiCalendarIds)).rejects.toThrow();
+    await expect(
+      OneMonthSchedule.setSchedule(
+        date,
+        getKeyakiCalendarUrl,
+        keyakiCalendarIds
+      )
+    ).rejects.toThrow();
     expect(Calendar.createEvent).not.toBeCalled();
   });
   it('カレンダーの作成に失敗した場合に例外が起きて後続の処理が止まること', async () => {
@@ -83,7 +98,13 @@ describe('setSchedule', () => {
     });
 
     const date = dayjs('2019-12-01');
-    await expect(OneMonthSchedule.setSchedule(date, getKeyakiCalendarUrl, keyakiCalendarIds)).rejects.toThrow();
+    await expect(
+      OneMonthSchedule.setSchedule(
+        date,
+        getKeyakiCalendarUrl,
+        keyakiCalendarIds
+      )
+    ).rejects.toThrow();
   });
   it('production環境では無かった場合にUrlFetchApp.fetchが呼ばれないこと', async () => {
     process.env.ENV = 'local';
@@ -91,7 +112,11 @@ describe('setSchedule', () => {
     fetchMock.mockOnce(getScheduleJson());
 
     const date = dayjs('2019-12-01');
-    await OneMonthSchedule.setSchedule(date, getKeyakiCalendarUrl, keyakiCalendarIds);
+    await OneMonthSchedule.setSchedule(
+      date,
+      getKeyakiCalendarUrl,
+      keyakiCalendarIds
+    );
     expect(UrlFetchApp.fetch).not.toBeCalled();
   });
 });

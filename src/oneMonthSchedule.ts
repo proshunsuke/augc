@@ -1,9 +1,6 @@
 import dayjs from 'dayjs';
 import Calendar from './calendar';
-import {
-  ScheduleInterface,
-  SiteCalendarInterface,
-} from './calendarInterface';
+import { ScheduleInterface, SiteCalendarInterface } from './calendarInterface';
 import Retry from './lib/retry';
 import 'regenerator-runtime';
 
@@ -15,7 +12,11 @@ export default class OneMonthSchedule {
    * @param siteCalendarIds
    * @returns {Promise<void>}
    */
-  static async setSchedule(date: dayjs.Dayjs, calendarUrl: string, siteCalendarIds: SiteCalendarInterface[]): Promise<void> {
+  static async setSchedule(
+    date: dayjs.Dayjs,
+    calendarUrl: string,
+    siteCalendarIds: SiteCalendarInterface[]
+  ): Promise<void> {
     const customUrl: string = calendarUrl + date.format('YYYYMMDD');
 
     const scheduleJson = await OneMonthSchedule.getScheduleJson(customUrl);
@@ -52,7 +53,10 @@ export default class OneMonthSchedule {
    * @param {dayjs.Dayjs} date
    * @param siteCalendarIds
    */
-  private static delete1MonthCalendarEvents(date: dayjs.Dayjs, siteCalendarIds: SiteCalendarInterface[]) {
+  private static delete1MonthCalendarEvents(
+    date: dayjs.Dayjs,
+    siteCalendarIds: SiteCalendarInterface[]
+  ) {
     let deleteEventCallCount = 0;
     siteCalendarIds.forEach((siteCalendarId) => {
       if (process.env.ENV !== 'production') return;

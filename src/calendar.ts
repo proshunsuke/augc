@@ -1,7 +1,4 @@
-import {
-  ScheduleInterface,
-  SiteCalendarInterface,
-} from './calendarInterface';
+import { ScheduleInterface, SiteCalendarInterface } from './calendarInterface';
 import Retry from './lib/retry';
 
 export default class Calendar {
@@ -23,10 +20,11 @@ export default class Calendar {
    * @param {ScheduleInterface} schedule
    * @param calendarIds
    */
-  static createEvent(schedule: ScheduleInterface, calendarIds: SiteCalendarInterface[]): void {
-    const siteCalendarId:
-      | SiteCalendarInterface
-      | undefined = calendarIds.find(
+  static createEvent(
+    schedule: ScheduleInterface,
+    calendarIds: SiteCalendarInterface[]
+  ): void {
+    const siteCalendarId: SiteCalendarInterface | undefined = calendarIds.find(
       (id) => id.type === schedule.type
     );
     if (typeof siteCalendarId === 'undefined') {
@@ -44,7 +42,7 @@ export default class Calendar {
           schedule.title,
           new Date(schedule.startTime),
           new Date(schedule.endTime),
-          {description: schedule.description}
+          { description: schedule.description }
         );
       } else {
         CalendarApp.getCalendarById(calendarId).createAllDayEvent(

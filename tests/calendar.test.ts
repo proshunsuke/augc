@@ -1,6 +1,6 @@
 import Calendar from '../src/calendar';
 import { ScheduleInterface } from '../src/calendarInterface';
-import {keyakiCalendarIds} from '../src/sites/keyakizaka/keyakiObjects';
+import { keyakiCalendarIds } from '../src/sites/keyakizaka/keyakiObjects';
 
 /**
  *

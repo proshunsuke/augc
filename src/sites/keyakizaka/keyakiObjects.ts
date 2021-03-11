@@ -1,4 +1,4 @@
-import {SiteCalendarInterface} from '../../calendarInterface';
+import { SiteCalendarInterface } from '../../calendarInterface';
 
 export const getKeyakiCalendarUrl =
   process.env.ENV === 'production'
