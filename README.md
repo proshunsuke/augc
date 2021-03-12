@@ -21,7 +21,7 @@ Auto Updating Google Calendar using google apps script
 
 自動更新されたGoogleカレンダーを自分のGoogleアカウントのカレンダーに追加することが出来ます
 
-1. URLを追加する  
+1. 共有用のURLをコピーする  
 追加したい予定のURLを[GoogleカレンダーのURL](#GoogleカレンダーのURL)からコピーしてください
 2. Googleアカウントでログインをする  
 スマホ、もしくはPCで追加したいGoogleのアカウントでログインしてください
