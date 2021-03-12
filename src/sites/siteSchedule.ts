@@ -30,7 +30,7 @@ export default abstract class SiteSchedule implements SiteScheduleInterface {
         console.info(
           `${TERMINATION_MINUTES}分以上経過したので次のトリガーをセットして終了します。次実行開始する月: ${targetBeginningOfMonth.format(
             'YYYY-MM-DD'
-          )}`
+          )}, 次実行するサイト: ${this.siteName()}`
         );
         return;
       }

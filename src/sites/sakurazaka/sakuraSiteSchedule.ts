@@ -15,6 +15,6 @@ export default class SakuraSiteSchedule extends SiteSchedule {
 
   // eslint-disable-next-line class-methods-use-this
   siteName(): string {
-    return 'sakurazakai';
+    return 'sakurazaka';
   }
 }

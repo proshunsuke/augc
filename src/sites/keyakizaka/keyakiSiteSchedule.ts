@@ -15,6 +15,6 @@ export default class KeyakiSiteSchedule extends SiteSchedule {
 
   // eslint-disable-next-line class-methods-use-this
   siteName(): string {
-    return 'keyakizakai';
+    return 'keyakizaka';
   }
 }
