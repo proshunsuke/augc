@@ -37,7 +37,7 @@ Auto Updating Google Calendar using google apps script
 
 ## GoogleカレンダーのURL
 
-欅坂46のカレンダー
+### 欅坂46のカレンダー
 
 種類|URL
 ---|---
@@ -50,7 +50,7 @@ Auto Updating Google Calendar using google apps script
 誕生日|https://calendar.google.com/calendar/ical/lihum5fsldhsspa3r8altr01ns%40group.calendar.google.com/public/basic.ics
 その他|https://calendar.google.com/calendar/ical/efhfvac7iii073suf8v16tlmic%40group.calendar.google.com/public/basic.ics
 
-櫻坂46のカレンダー
+### 櫻坂46のカレンダー
 
 種類|URL
 ---|---
