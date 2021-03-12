@@ -27,7 +27,7 @@ Auto Updating Google Calendar using google apps script
 スマホ、もしくはPCで追加したいGoogleのアカウントでログインしてください
 3. Googleカレンダーを開く  
 現在アプリから追加する方法がありません。スマホを利用している方もPC版のGoogleカレンダーを開いてください
-  * [PC版Googleカレンダー](https://calendar.google.com/calendar/r?hl=ja)
+   * [PC版Googleカレンダー](https://calendar.google.com/calendar/r?hl=ja)
 4. カレンダーを追加する  
  [他のカレンダー] → [+] → [URLで追加] と進んでください  
  先程コピーしたURLを貼り付けてください  
