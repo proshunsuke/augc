@@ -1,5 +1,6 @@
 import { ScheduleInterface, SiteCalendarInterface } from './calendarInterface';
 import Retry from './lib/retry';
+import Counter from './lib/counter';
 
 export default class Calendar {
   /**
@@ -10,6 +11,8 @@ export default class Calendar {
     Retry.retryable(3, () => {
       event.deleteEvent();
     });
+    const counter = Counter.getInstance;
+    counter.incrementDeleteEventCallCount();
     if (process.env.ENV === 'production') {
       Utilities.sleep(500); // API制限に引っかかってそうなのでsleepする
     }
@@ -54,6 +57,8 @@ export default class Calendar {
         );
       }
     });
+    const counter = Counter.getInstance;
+    counter.incrementCreateEventCallCount();
     console.info(
       `予定を作成しました。日付: ${schedule.date}, タイトル: ${schedule.title}`
     );
