@@ -48,7 +48,9 @@ export default class Calendar {
         CalendarApp.getCalendarById(calendarId).createAllDayEvent(
           schedule.title,
           new Date(schedule.date),
-          { description: schedule.description }
+          {
+            description: schedule.description,
+          }
         );
       }
     });

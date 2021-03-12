@@ -13,7 +13,7 @@ export default class Retry {
         return func();
       } catch (e) {
         lastError = e;
-        const message = e instanceof Error ? e.message : 'error';
+        const { message } = e as Error;
         console.info(
           `エラーが起きました。リトライを行います。message: ${message}, リトライ${i.toString()}回目`
         );
