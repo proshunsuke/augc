@@ -9,8 +9,8 @@ Auto Updating Google Calendar using google apps script
 公式サイトのカレンダー情報を元に自動的にGoogleカレンダーの予定を更新します  
 更新頻度は1日に1回午前3時〜4時の間に1年分です  
 現在対応している公式サイトは以下の通りです
-* <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Keyakizaka46_logo.svg/800px-Keyakizaka46_logo.svg.png" width="12px" alt="欅坂46のロゴ"> [スケジュール | 欅坂46公式サイト](https://www.keyakizaka46.com/s/k46o/media/list)
 * <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Sakurazaka46_logo.svg/1920px-Sakurazaka46_logo.svg.png" width="12px" alt="櫻坂46のロゴ"> [スケジュール | 櫻坂46公式サイト ](https://sakurazaka46.com/s/s46/media/list)
+* <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Keyakizaka46_logo.svg/800px-Keyakizaka46_logo.svg.png" width="12px" alt="欅坂46のロゴ"> [スケジュール | 欅坂46公式サイト](https://www.keyakizaka46.com/s/k46o/media/list)
 
 ### 目的
 
@@ -37,19 +37,6 @@ Auto Updating Google Calendar using google apps script
 
 ## GoogleカレンダーのURL
 
-### 欅坂46のカレンダー
-
-種類|URL
----|---
-握手会|https://calendar.google.com/calendar/ical/jdnc8uf21242be7qjm5nmj7uok%40group.calendar.google.com/public/basic.ics
-イベント情報|https://calendar.google.com/calendar/ical/eh0boh68ai7r2v15m38k2ms1lg%40group.calendar.google.com/public/basic.ics
-グッズ|https://calendar.google.com/calendar/ical/8l4srrnd9c6vge51k6cclsdsmc%40group.calendar.google.com/public/basic.ics
-リリース|https://calendar.google.com/calendar/ical/8tc88j0j9gmr95qa81r8t2210c%40group.calendar.google.com/public/basic.ics
-チケット|https://calendar.google.com/calendar/ical/f4bcp8sqv66sugk9m06gb1ioeg%40group.calendar.google.com/public/basic.ics
-メディア|https://calendar.google.com/calendar/ical/9beck0tqd2096b3b5utkh0jg8g%40group.calendar.google.com/public/basic.ics
-誕生日|https://calendar.google.com/calendar/ical/lihum5fsldhsspa3r8altr01ns%40group.calendar.google.com/public/basic.ics
-その他|https://calendar.google.com/calendar/ical/efhfvac7iii073suf8v16tlmic%40group.calendar.google.com/public/basic.ics
-
 ### 櫻坂46のカレンダー
 
 種類|URL
@@ -66,6 +53,19 @@ Auto Updating Google Calendar using google apps script
 雑誌|https://calendar.google.com/calendar/ical/2veim8rg9o7k2js0jtng8i2dug@group.calendar.google.com/public/basic.ics
 新聞|https://calendar.google.com/calendar/ical/g3puqreu4a67quqqu7ueo58l5k@group.calendar.google.com/public/basic.ics
 誕生日|https://calendar.google.com/calendar/ical/02mgt618voeueel3gonuc62nrs@group.calendar.google.com/public/basic.ics
+
+### 欅坂46のカレンダー
+
+種類|URL
+---|---
+握手会|https://calendar.google.com/calendar/ical/jdnc8uf21242be7qjm5nmj7uok%40group.calendar.google.com/public/basic.ics
+イベント情報|https://calendar.google.com/calendar/ical/eh0boh68ai7r2v15m38k2ms1lg%40group.calendar.google.com/public/basic.ics
+グッズ|https://calendar.google.com/calendar/ical/8l4srrnd9c6vge51k6cclsdsmc%40group.calendar.google.com/public/basic.ics
+リリース|https://calendar.google.com/calendar/ical/8tc88j0j9gmr95qa81r8t2210c%40group.calendar.google.com/public/basic.ics
+チケット|https://calendar.google.com/calendar/ical/f4bcp8sqv66sugk9m06gb1ioeg%40group.calendar.google.com/public/basic.ics
+メディア|https://calendar.google.com/calendar/ical/9beck0tqd2096b3b5utkh0jg8g%40group.calendar.google.com/public/basic.ics
+誕生日|https://calendar.google.com/calendar/ical/lihum5fsldhsspa3r8altr01ns%40group.calendar.google.com/public/basic.ics
+その他|https://calendar.google.com/calendar/ical/efhfvac7iii073suf8v16tlmic%40group.calendar.google.com/public/basic.ics
 
 ## 開発
 
