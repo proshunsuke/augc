@@ -13,6 +13,7 @@ export interface SiteScheduleInterface {
 export default abstract class SiteSchedule implements SiteScheduleInterface {
   async setSiteSchedule(startDate: dayjs.Dayjs): Promise<void> {
     if (!this.doesExecute()) return;
+    console.info(`${this.siteName()}の予定を更新します`);
     const beginningOfNexYearMonth = dayjs().startOf('month').add(1, 'year');
     let targetBeginningOfMonth = SiteSchedule.getTargetBeginningOfMonth();
 
