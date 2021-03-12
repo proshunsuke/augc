@@ -3,6 +3,7 @@ import Calendar from './calendar';
 import { ScheduleInterface, SiteCalendarInterface } from './calendarInterface';
 import Retry from './lib/retry';
 import 'regenerator-runtime';
+import Counter from './lib/counter';
 
 export default class OneMonthSchedule {
   /**
@@ -57,7 +58,7 @@ export default class OneMonthSchedule {
     date: dayjs.Dayjs,
     siteCalendarIds: SiteCalendarInterface[]
   ) {
-    let deleteEventCallCount = 0;
+    const counter = Counter.getInstance;
     siteCalendarIds.forEach((siteCalendarId) => {
       if (process.env.ENV !== 'production') return;
       const calendarApp = Retry.retryable(3, () =>
@@ -70,12 +71,11 @@ export default class OneMonthSchedule {
         const events = calendarApp.getEventsForDay(targetDate.toDate());
         // eslint-disable-next-line @typescript-eslint/no-loop-func
         events.forEach((event) => {
-          deleteEventCallCount += 1;
           try {
             Calendar.deleteEvent(event);
           } catch (e) {
             console.error(
-              `カレンダー削除に失敗しました。失敗するまでに実行された回数: ${deleteEventCallCount.toString()}`
+              `カレンダー削除に失敗しました。失敗するまでに実行された回数: ${counter.getDeleteEventCallCount()}`
             );
             throw e;
           }
@@ -86,7 +86,7 @@ export default class OneMonthSchedule {
     console.info(
       `${date.format(
         'YYYY年MM月'
-      )}分のカレンダー削除実行回数${deleteEventCallCount.toString()}`
+      )}分時点のカレンダー削除実行回数${counter.getDeleteEventCallCount()}`
     );
   }
 
@@ -101,22 +101,17 @@ export default class OneMonthSchedule {
     date: dayjs.Dayjs,
     calendarIds: SiteCalendarInterface[]
   ) {
-    let createEventCallCount = 0;
+    const counter = Counter.getInstance;
     scheduleList.forEach((schedule: ScheduleInterface) => {
-      createEventCallCount += 1;
       try {
         Calendar.createEvent(schedule, calendarIds);
       } catch (e) {
         console.error(
-          `カレンダー作成に失敗しました。失敗するまでに実行された回数: ${createEventCallCount.toString()}`
+          `カレンダー作成に失敗しました。失敗するまでに実行された回数: ${counter.getCreateEventCallCount()}`
         );
         throw e;
       }
     });
-    console.info(
-      `${date.format(
-        'YYYY年MM月'
-      )}分のカレンダー作成実行回数: ${createEventCallCount.toString()}`
-    );
+    console.info(`${date.format('YYYY年MM月')}分時点のカレンダー作成回数: ${counter.getCreateEventCallCount()}`);
   }
 }

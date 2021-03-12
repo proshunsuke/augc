@@ -1,20 +1,20 @@
 import SiteSchedule from '../siteSchedule';
-import { getKeyakiCalendarUrl, keyakiCalendarIds } from './keyakiObjects';
+import { getSakuraCalendarUrl, sakuraCalendarIds } from './sakuraObjects';
 import { SiteCalendarInterface } from '../../calendarInterface';
 
-export default class KeyakiSiteSchedule extends SiteSchedule {
+export default class SakuraSiteSchedule extends SiteSchedule {
   // eslint-disable-next-line class-methods-use-this
   siteCalendarUrl(): string {
-    return getKeyakiCalendarUrl;
+    return getSakuraCalendarUrl;
   }
 
   // eslint-disable-next-line class-methods-use-this
   siteCalendarIds(): SiteCalendarInterface[] {
-    return keyakiCalendarIds;
+    return sakuraCalendarIds;
   }
 
   // eslint-disable-next-line class-methods-use-this
   siteName(): string {
-    return 'keyakizaka';
+    return 'sakurazaka';
   }
 }

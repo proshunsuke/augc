@@ -15,7 +15,7 @@ global.createSetScheduleTrigger = (): void => {
 
 global.setSchedule = async (): Promise<void> => {
   console.info('スケジュール更新を開始します');
-  await Schedule.setSchedule();
+  await Schedule.setSchedule(dayjs());
   console.info('スケジュール更新が完了しました');
 };
 

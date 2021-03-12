@@ -47,6 +47,27 @@ describe('setTrigger', (): void => {
     expect(setPropertyMock).toBeCalledWith('target_date', '2019-12-01');
     expect(createMock).toBeCalledTimes(1);
   });
+  it('siteNameが存在する場合にsite_nameがセットされること', () => {
+    const createMock = jest.fn().mockReturnThis();
+    const setPropertyMock = jest.fn().mockReturnThis();
+
+    PropertiesService.getScriptProperties = jest.fn(() => ({
+      setProperty: setPropertyMock,
+    })) as jest.Mock;
+
+    ScriptApp.newTrigger = jest.fn(() => ({
+      timeBased: jest.fn(() => ({
+        after: jest.fn(() => ({
+          create: createMock,
+        })),
+      })),
+    })) as jest.Mock;
+
+    Trigger.setTrigger(dayjs('2019-12-01'), 'keyakizaka');
+    expect(setPropertyMock).toBeCalledTimes(2);
+    expect(setPropertyMock).toBeCalledWith('site_name', 'keyakizaka');
+    expect(createMock).toBeCalledTimes(1);
+  });
   it('production環境では無かった場合にPropertiesService.getScriptPropertiesが呼ばれないこと', () => {
     process.env.ENV = 'local';
     PropertiesService.getScriptProperties = jest.fn();
@@ -89,6 +110,43 @@ describe('deleteTargetDateProperty', (): void => {
     PropertiesService.getScriptProperties = jest.fn();
 
     Trigger.deleteTargetDateProperty();
+    expect(PropertiesService.getScriptProperties).not.toBeCalled();
+  });
+});
+
+describe('getTargetSiteNameProperty', (): void => {
+  it('getPropertyが呼ばれること', () => {
+    const getPropertyMock = jest.fn().mockReturnValue('2019-12-01');
+    PropertiesService.getScriptProperties = jest.fn(() => ({
+      getProperty: getPropertyMock,
+    })) as jest.Mock;
+    const result = Trigger.getTargetSiteNameProperty();
+    expect(result).toBe('2019-12-01');
+    expect(getPropertyMock).toBeCalledTimes(1);
+  });
+  it('production環境では無かった場合にPropertiesService.getScriptPropertiesが呼ばれないこと', () => {
+    process.env.ENV = 'local';
+    PropertiesService.getScriptProperties = jest.fn();
+
+    Trigger.getTargetSiteNameProperty();
+    expect(PropertiesService.getScriptProperties).not.toBeCalled();
+  });
+});
+
+describe('deleteTargetSiteNameProperty', (): void => {
+  it('deletePropertyが呼ばれること', () => {
+    const deletePropertyMock = jest.fn().mockReturnValueOnce('2019-12-01');
+    PropertiesService.getScriptProperties = jest.fn(() => ({
+      deleteProperty: deletePropertyMock,
+    })) as jest.Mock;
+    Trigger.deleteTargetSiteNameProperty();
+    expect(deletePropertyMock).toBeCalledTimes(1);
+  });
+  it('production環境では無かった場合にPropertiesService.getScriptPropertiesが呼ばれないこと', () => {
+    process.env.ENV = 'local';
+    PropertiesService.getScriptProperties = jest.fn();
+
+    Trigger.deleteTargetSiteNameProperty();
     expect(PropertiesService.getScriptProperties).not.toBeCalled();
   });
 });

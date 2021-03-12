@@ -59,6 +59,17 @@ describe('deleteEvent', (): void => {
     Calendar.deleteEvent(calendarEventMock());
     expect(deleteEventMock).toBeCalledTimes(1);
   });
+  it('production環境では無かった場合にUtilities.sleepが呼ばれないこと', () => {
+    process.env.ENV = 'local';
+    Utilities.sleep = jest.fn();
+
+    const deleteEventMock = jest.fn().mockReturnThis();
+    const calendarEventMock: jest.Mock = jest.fn(() => ({
+      deleteEvent: deleteEventMock,
+    }));
+    Calendar.deleteEvent(calendarEventMock());
+    expect(Utilities.sleep).not.toBeCalled();
+  });
 });
 
 describe('createEvent', (): void => {

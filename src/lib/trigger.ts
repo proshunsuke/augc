@@ -1,9 +1,10 @@
 import dayjs from 'dayjs';
 
 const TARGET_DATE_KEY = 'target_date';
+const TARGET_SITE_NAME_KEY = 'site_name';
 export const TERMINATION_MINUTES = 4;
 const TRIGGER_FUNCTION_NAME = 'setSchedule';
-const TRIGGER_DURATION: number = 60 * 1000; // 1分後
+const TRIGGER_DURATION: number = 60 * 2000; // 2分後
 
 export default class Trigger {
   /**
@@ -18,11 +19,13 @@ export default class Trigger {
   /**
    *
    * @param {dayjs.Dayjs} targetDate
+   * @param {string} siteName
    */
-  static setTrigger(targetDate: dayjs.Dayjs): void {
+  static setTrigger(targetDate: dayjs.Dayjs, siteName?: string): void {
     if (process.env.ENV !== 'production') return;
     const properties = PropertiesService.getScriptProperties();
     properties.setProperty(TARGET_DATE_KEY, targetDate.format('YYYY-MM-DD'));
+    if (siteName) properties.setProperty(TARGET_SITE_NAME_KEY, siteName);
     ScriptApp.newTrigger(TRIGGER_FUNCTION_NAME)
       .timeBased()
       .after(TRIGGER_DURATION)
@@ -35,14 +38,30 @@ export default class Trigger {
    */
   static getTargetDateProperty(): string | null {
     if (process.env.ENV !== 'production') return null;
-    const properties: GoogleAppsScript.Properties.Properties = PropertiesService.getScriptProperties();
+    const properties = PropertiesService.getScriptProperties();
     return properties.getProperty(TARGET_DATE_KEY);
   }
 
   static deleteTargetDateProperty(): void {
     if (process.env.ENV !== 'production') return;
-    const properties: GoogleAppsScript.Properties.Properties = PropertiesService.getScriptProperties();
+    const properties = PropertiesService.getScriptProperties();
     properties.deleteProperty(TARGET_DATE_KEY);
+  }
+
+  /**
+   *
+   * @returns {string | null}
+   */
+  static getTargetSiteNameProperty(): string | null {
+    if (process.env.ENV !== 'production') return null;
+    const properties = PropertiesService.getScriptProperties();
+    return properties.getProperty(TARGET_SITE_NAME_KEY);
+  }
+
+  static deleteTargetSiteNameProperty(): void {
+    if (process.env.ENV !== 'production') return;
+    const properties = PropertiesService.getScriptProperties();
+    properties.deleteProperty(TARGET_SITE_NAME_KEY);
   }
 
   static deleteTriggers(): void {

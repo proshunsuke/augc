@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import MockDate from 'mockdate';
-import KeyakiSiteSchedule from '../../../src/sites/keyakizaka/keyakiSiteSchedule';
+import SakuraSiteSchedule from '../../../src/sites/sakurazaka/sakuraSiteSchedule';
 import OneMonthSchedule from '../../../src/oneMonthSchedule';
 
 jest.mock('../../../src/oneMonthSchedule');
@@ -12,8 +12,8 @@ describe('setSiteSchedule', (): void => {
     jest.resetAllMocks();
   });
   it('setScheduleが12回呼ばれ1年分の予定が作成されること', async () => {
-    const keyakiSiteSchedule = new KeyakiSiteSchedule();
-    await keyakiSiteSchedule.setSiteSchedule(dayjs());
+    const sakuraSiteSchedule = new SakuraSiteSchedule();
+    await sakuraSiteSchedule.setSiteSchedule(dayjs());
     expect(OneMonthSchedule.setSchedule).toBeCalledTimes(12);
   });
 });

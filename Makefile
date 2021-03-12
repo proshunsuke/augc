@@ -10,8 +10,11 @@ build: install
 watch:
 	ENV=local yarn webpack watch
 
-server:
-	yarn run functions-framework --target=getKeyakiSchedule --source=./gcpFunctions/getKeyakiSchedule
+server/keyaki:
+	yarn run functions-framework --target=getKeyakiSchedule --source=./gcpFunctions/getKeyakiSchedule --port 8080
+
+server/sakura:
+	yarn run functions-framework --target=getSakuraSchedule --source=./gcpFunctions/getSakuraSchedule --port 8081
 
 run/setSchedule:
 	node -e 'require("./dist/index.js");global.setSchedule();'
