@@ -12,4 +12,9 @@ export default class KeyakiSiteSchedule extends SiteSchedule {
   siteCalendarIds(): SiteCalendarInterface[] {
     return keyakiCalendarIds;
   }
+
+  // eslint-disable-next-line class-methods-use-this
+  siteName(): string {
+    return 'keyakizakai';
+  }
 }

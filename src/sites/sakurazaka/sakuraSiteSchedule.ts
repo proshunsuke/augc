@@ -12,4 +12,9 @@ export default class SakuraSiteSchedule extends SiteSchedule {
   siteCalendarIds(): SiteCalendarInterface[] {
     return sakuraCalendarIds;
   }
+
+  // eslint-disable-next-line class-methods-use-this
+  siteName(): string {
+    return 'sakurazakai';
+  }
 }

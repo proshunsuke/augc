@@ -7,10 +7,12 @@ export interface SiteScheduleInterface {
   setSiteSchedule(startDate: dayjs.Dayjs): Promise<void>;
   siteCalendarUrl(): string;
   siteCalendarIds(): SiteCalendarInterface[];
+  siteName(): string;
 }
 
 export default abstract class SiteSchedule implements SiteScheduleInterface {
   async setSiteSchedule(startDate: dayjs.Dayjs): Promise<void> {
+    if (!this.doesExecute()) return;
     const beginningOfNexYearMonth = dayjs().startOf('month').add(1, 'year');
     let targetBeginningOfMonth = SiteSchedule.getTargetBeginningOfMonth();
 
@@ -23,7 +25,7 @@ export default abstract class SiteSchedule implements SiteScheduleInterface {
       );
       targetBeginningOfMonth = targetBeginningOfMonth.add(1, 'month');
       if (Trigger.hasExceededTerminationMinutes(startDate)) {
-        Trigger.setTrigger(targetBeginningOfMonth);
+        Trigger.setTrigger(targetBeginningOfMonth, this.siteName());
         console.info(
           `${TERMINATION_MINUTES}分以上経過したので次のトリガーをセットして終了します。次実行開始する月: ${targetBeginningOfMonth.format(
             'YYYY-MM-DD'
@@ -33,6 +35,7 @@ export default abstract class SiteSchedule implements SiteScheduleInterface {
       }
     }
     Trigger.deleteTargetDateProperty();
+    Trigger.deleteTargetSiteNameProperty();
     Trigger.deleteTriggers();
   }
 
@@ -47,7 +50,19 @@ export default abstract class SiteSchedule implements SiteScheduleInterface {
       : dayjs().startOf('month');
   }
 
+  /**
+   *
+   * @returns {boolean}
+   * @private
+   */
+  private doesExecute() {
+    const siteNameProperty = Trigger.getTargetSiteNameProperty();
+    return !siteNameProperty || siteNameProperty === this.siteName();
+  }
+
   abstract siteCalendarUrl(): string;
 
   abstract siteCalendarIds(): SiteCalendarInterface[];
+
+  abstract siteName(): string;
 }

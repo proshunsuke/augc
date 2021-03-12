@@ -21,6 +21,13 @@ describe('setSchedule', (): void => {
     await Schedule.setSchedule(dayjs());
     expect(OneMonthSchedule.setSchedule).toBeCalledTimes(23);
   });
+  it('propertiesにサイト名がセットされていた場合にそのサイトからスケジュール登録が始まること', async () => {
+    Trigger.getTargetSiteNameProperty = jest
+      .fn()
+      .mockReturnValueOnce('sakurazaka');
+    await Schedule.setSchedule(dayjs());
+    expect(OneMonthSchedule.setSchedule).toBeCalledTimes(12);
+  });
   it('実行時間が指定時間を過ぎていたらトリガーがセットされ処理が終わること', async () => {
     Trigger.hasExceededTerminationMinutes = jest
       .fn()
