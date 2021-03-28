@@ -112,6 +112,10 @@ export default class OneMonthSchedule {
         throw e;
       }
     });
-    console.info(`${date.format('YYYY年MM月')}分時点のカレンダー作成回数: ${counter.getCreateEventCallCount()}`);
+    console.info(
+      `${date.format(
+        'YYYY年MM月'
+      )}分時点のカレンダー作成回数: ${counter.getCreateEventCallCount()}`
+    );
   }
 }
