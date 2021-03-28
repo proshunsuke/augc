@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 
 const TARGET_DATE_KEY = 'target_date';
 const TARGET_SITE_NAME_KEY = 'site_name';
-export const TERMINATION_MINUTES = 4;
+export const TERMINATION_MINUTES = 3;
 const TRIGGER_FUNCTION_NAME = 'setSchedule';
 const TRIGGER_DURATION: number = 60 * 2000; // 2分後
 
