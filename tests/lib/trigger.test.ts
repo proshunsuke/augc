@@ -14,12 +14,12 @@ afterAll(() => {
 
 describe('hasExceededTerminationMinutes', (): void => {
   it('現在時刻が基準時刻を超えている場合にtrueを返すこと', () => {
-    const startDate = dayjs('2019-12-09T23:56:00.000Z');
+    const startDate = dayjs('2019-12-09T23:57:00.000Z');
     const result = Trigger.hasExceededTerminationMinutes(startDate);
     expect(result).toBeTruthy();
   });
   it('現在時刻が基準時刻を超えていない場合にfalseを返すこと', () => {
-    const startDate = dayjs('2019-12-09T23:56:01.000Z');
+    const startDate = dayjs('2019-12-09T23:57:01.000Z');
     const result = Trigger.hasExceededTerminationMinutes(startDate);
     expect(result).toBeFalsy();
   });
