@@ -2,7 +2,7 @@ import { SiteCalendarInterface } from '../../calendarInterface';
 
 export const getSakuraCalendarUrl =
   process.env.ENV === 'production'
-    ? 'https://asia-northeast1-augc-260709.cloudfunctions.net/getSakuraSchedule?date='
+    ? 'https://us-central1-augc-260709.cloudfunctions.net/getSakuraSchedule?date='
     : 'http://localhost:8081?date=';
 
 export const sakuraCalendarIds: SiteCalendarInterface[] = [
