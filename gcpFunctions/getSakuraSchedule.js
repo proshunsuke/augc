@@ -15,8 +15,8 @@ exports.getSakuraSchedule = async (req, res) => {
 
     await page.setUserAgent('Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1');
 
-    const date = req.query['date'];
-    const url = 'https://sakurazaka46.com/s/s46/media/list?ima=5250&dy=' + date.substring(0, date.length - 2);
+    const date = req.query['date'] ? date.substring(0, date.length - 2) : '';
+    const url = 'https://sakurazaka46.com/s/s46/media/list?ima=5250&dy=' + date;
     await page.goto(url);
 
     const modalScheduleDetails = await page.$$('.module-modal.js-schedule-detail');
