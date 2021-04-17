@@ -13,41 +13,48 @@ exports.getSakuraSchedule = async (req, res) => {
         page = await getBrowserPage();
     }
 
-    await page.goto('https://sakurazaka46.com/s/s46/media/list?dy=' + req.query['date']);
+    await page.setUserAgent('Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1');
 
-    const scheduleEvents = await page.evaluate("scheduleEvents");
+    const date = req.query['date'];
+    const url = 'https://sakurazaka46.com/s/s46/media/list?ima=5250&dy=' + date.substring(0, date.length - 2);
+    await page.goto(url);
 
-    const scheduleDateList = Array.from(new Set(scheduleEvents.map((scheduleEvent) => scheduleEvent.start.replace(/-/g, ''))));
+    const modalScheduleDetails = await page.$$('.module-modal.js-schedule-detail');
+    let result = await modalScheduleDetails.reduce(async (list, modalScheduleDetail) => {
+        const l = (await list);
+        const date = await (await modalScheduleDetail.$('.date.wf-a')).evaluate((el) => el.textContent);
+        const title = await (await modalScheduleDetail.$('.title')).evaluate((el) => el.textContent);
+        const members = await Promise.all(
+            (await modalScheduleDetail.$$('.members.fx > li')).map(async (li) => await li.evaluate((el) => el.textContent))
+        );
+        const scheduleObject = {title, date};
+        if (members.length !== 0) scheduleObject.description = `メンバー: ${members.join(', ')}`;
+        l.push(scheduleObject);
+        return l;
+    }, []);
 
-    const result = [];
+    const scheduleDetailModals = await page.$$('.js-schedule-detail-modal');
+    result = await scheduleDetailModals.reduce(async (list, scheduleDetailModal, index) => {
+        const l = await list;
+        const type = await (await scheduleDetailModal.$('.type')).evaluate((el) => el.textContent) || 'その他';
+        const times = await (await scheduleDetailModal.$('.times')).evaluate((el) => el.textContent);
 
-    for await (const scheduleDate of scheduleDateList) {
-        await page.goto('https://sakurazaka46.com/s/s46/media/list?dy=' + scheduleDate);
-        const scheduleContexts = await page.$$('.com-arclist-part li.box');
-        for (const scheduleContext of scheduleContexts) {
-            const type = await (await scheduleContext.$('.type')).evaluate((el) => el.textContent) || 'その他';
-            const times = await (await scheduleContext.$('.times')).evaluate((el) => el.textContent);
-            const modalCount = (await (await scheduleContext.$('.js-schedule-detail-modal')).evaluate((el) => el.href)).replace(/^.*#/g, '');
-            const date = await (await page.$(`.${modalCount} .date.wf-a`)).evaluate((el) => el.textContent);
-            const title = await (await page.$(`.${modalCount} .title`)).evaluate((el) => el.textContent);
-            const members = await Promise.all(
-                (await page.$$(`.${modalCount} .members.fx > li`)).map(async (liElement) => await liElement.evaluate((el) => el.textContent))
-            );
-            const scheduleObject = {title: title, date: date, type: type};
-            if (times) {
-                const startTime = formattedDate(date, times.replace(/～.*/, ''));
-                const endTimeHourMin = times.replace(/.*～/, '');
-                const endTime = endTimeHourMin ? formattedDate(date, endTimeHourMin) : startTime;
-                scheduleObject.startTime = startTime;
-                scheduleObject.endTime = endTime;
-            }
-            if (members.length !== 0) scheduleObject.description = `メンバー: ${members.join(', ')}`;
-            result.push(scheduleObject);
-        }
-    }
+        let scheduleObject = {type};
+        if (times) scheduleObject = {...scheduleObject, ...startEndTimeObject(l[index].date, times)};
+
+        l[index] = {...l[index], ...scheduleObject};
+        return l;
+    }, result);
 
     res.send(result);
 };
+
+function startEndTimeObject(date, times) {
+    const startTime = formattedDate(date, times.replace(/～.*/, ''));
+    const endTimeHourMin = times.replace(/.*～/, '');
+    const endTime = endTimeHourMin ? formattedDate(date, endTimeHourMin) : startTime;
+    return {startTime, endTime};
+}
 
 function formattedDate(date, hourMin) {
     if ((new Date(`${date} ${hourMin}`)).toString() !== 'Invalid Date') return `${date} ${hourMin}`;
