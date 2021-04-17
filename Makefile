@@ -28,6 +28,9 @@ push: build
 run:
 	yarn clasp run execute
 
+run/local:
+	node -e 'require("./dist/index.js");global.setSchedule();'
+
 open:
 	yarn clasp open
 
