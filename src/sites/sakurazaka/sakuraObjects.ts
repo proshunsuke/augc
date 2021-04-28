@@ -54,4 +54,8 @@ export const sakuraCalendarIds: SiteCalendarInterface[] = [
     type: '誕生日',
     calendarId: '02mgt618voeueel3gonuc62nrs@group.calendar.google.com',
   },
+  {
+    type: '配信',
+    calendarId: '20vk7nohgs6r8up3d0im1olhpg@group.calendar.google.com',
+  },
 ];
