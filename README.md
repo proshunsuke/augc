@@ -53,6 +53,7 @@ Auto Updating Google Calendar using google apps script
 雑誌|https://calendar.google.com/calendar/ical/2veim8rg9o7k2js0jtng8i2dug@group.calendar.google.com/public/basic.ics
 新聞|https://calendar.google.com/calendar/ical/g3puqreu4a67quqqu7ueo58l5k@group.calendar.google.com/public/basic.ics
 誕生日|https://calendar.google.com/calendar/ical/02mgt618voeueel3gonuc62nrs@group.calendar.google.com/public/basic.ics
+配信|https://calendar.google.com/calendar/ical/20vk7nohgs6r8up3d0im1olhpg%40group.calendar.google.com/public/basic.ics
 
 ### 欅坂46のカレンダー
 
