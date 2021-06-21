@@ -38,32 +38,48 @@ export default class Calendar {
       );
     }
     const { calendarId } = siteCalendarId;
+    const args = this.createEventArgs(schedule);
     Retry.retryable(3, () => {
       if (process.env.ENV !== 'production') return;
       if (schedule.startTime && schedule.endTime) {
         CalendarApp.getCalendarById(calendarId).createEvent(
-          schedule.title,
-          new Date(schedule.startTime),
-          new Date(schedule.endTime),
-          { description: schedule.description }
+          ...(args as [string, Date, Date, { [key: string]: unknown }])
         );
       } else {
         CalendarApp.getCalendarById(calendarId).createAllDayEvent(
-          schedule.title,
-          new Date(schedule.date),
-          {
-            description: schedule.description,
-          }
+          ...(args as [string, Date, { [key: string]: unknown }])
         );
       }
     });
     const counter = Counter.getInstance;
     counter.incrementCreateEventCallCount();
-    console.info(
-      `予定を作成しました。日付: ${schedule.date}, タイトル: ${schedule.title}`
-    );
+    console.info('予定を作成しました。', args);
     if (process.env.ENV === 'production') {
       Utilities.sleep(500); // API制限に引っかかってそうなのでsleepする
     }
+  }
+
+  /**
+   *
+   * @param {ScheduleInterface} schedule
+   * @returns {(string | Date | {description: string | undefined})[]}
+   * @private
+   */
+  private static createEventArgs(
+    schedule: ScheduleInterface
+  ): (string | Date | { description: string | undefined })[] {
+    if (schedule.startTime && schedule.endTime) {
+      return [
+        schedule.title,
+        new Date(schedule.startTime),
+        new Date(schedule.endTime),
+        { description: schedule.description },
+      ];
+    }
+    return [
+      schedule.title,
+      new Date(schedule.date),
+      { description: schedule.description },
+    ];
   }
 }
