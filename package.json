@@ -63,5 +63,8 @@
     "setupFiles": [
       "./setupJest.js"
     ]
+  },
+  "resolutions": {
+    "merge": "~2.1.1"
   }
 }
