@@ -22,7 +22,8 @@ exports.getSakuraSchedule = async (req, res) => {
     const modalScheduleDetails = await page.$$('.module-modal.js-schedule-detail');
     let result = await modalScheduleDetails.reduce(async (list, modalScheduleDetail) => {
         const l = (await list);
-        const date = await (await modalScheduleDetail.$('.date.wf-a')).evaluate((el) => el.textContent);
+        const dateAndTimes = await (await modalScheduleDetail.$('.date.wf-a')).evaluate((el) => el.textContent);
+        const date = dateAndTimes.replace(/\s.*/, '');
         const title = await (await modalScheduleDetail.$('.title')).evaluate((el) => el.textContent);
         const members = await Promise.all(
             (await modalScheduleDetail.$$('.members.fx > li')).map(async (li) => await li.evaluate((el) => el.textContent))
