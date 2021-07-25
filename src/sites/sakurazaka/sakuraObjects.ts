@@ -58,4 +58,12 @@ export const sakuraCalendarIds: SiteCalendarInterface[] = [
     type: '配信',
     calendarId: '20vk7nohgs6r8up3d0im1olhpg@group.calendar.google.com',
   },
+  {
+    type: 'WEB',
+    calendarId: '3vou5o22r7tdvks9ibqcfc94hg@group.calendar.google.com',
+  },
+  {
+    type: '写真集',
+    calendarId: 't3a2ndlevb6d0ufcg8himsg0ng@group.calendar.google.com',
+  },
 ];
