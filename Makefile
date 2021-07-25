@@ -16,9 +16,6 @@ server/keyaki:
 server/sakura:
 	yarn run functions-framework --target=getSakuraSchedule --source=./gcpFunctions/getSakuraSchedule --port 8081
 
-run/setSchedule:
-	node -e 'require("./dist/index.js");global.setSchedule();'
-
 login:
 	yarn clasp login
 
