@@ -10,7 +10,7 @@ module.exports = {
         ecmaVersion: 2018,
         project: ['./tsconfig.eslint.json'],
     },
-    plugins: ['@typescript-eslint', 'jest'],
+    plugins: ['import', '@typescript-eslint', 'jest'],
     extends: [
         'airbnb-typescript/base',
         'plugin:@typescript-eslint/recommended',
