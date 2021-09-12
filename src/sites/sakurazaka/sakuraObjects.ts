@@ -31,12 +31,20 @@ export const sakuraCalendarIds: SiteCalendarInterface[] = [
     calendarId: 'ivej29993ugnjb20l077n233i4@group.calendar.google.com',
   },
   {
+    type: 'ライブ',
+    calendarId: 'dbot8s6eu5o91u6evdi4hucdr0@group.calendar.google.com',
+  },
+  {
     type: 'ラジオ',
     calendarId: 'f01lrnkgl42eqfbs1k97u7mrdc@group.calendar.google.com',
   },
   {
     type: 'リリース',
     calendarId: 'oo8hkuk4udrflu06337hq42jqo@group.calendar.google.com',
+  },
+  {
+    type: '握手会',
+    calendarId: 'd7q626djcs2ooq8rkpoc045d5c@group.calendar.google.com',
   },
   {
     type: '映画',

@@ -47,8 +47,10 @@ Auto Updating Google Calendar using google apps script
 その他|https://calendar.google.com/calendar/ical/06ol8jcjk0r5bviarevjicta70@group.calendar.google.com/public/basic.ics
 テレビ|https://calendar.google.com/calendar/ical/14elrf80nstbrahsfe2iuem8fg@group.calendar.google.com/public/basic.ics
 メディア|https://calendar.google.com/calendar/ical/ivej29993ugnjb20l077n233i4@group.calendar.google.com/public/basic.ics
+ライブ|https://calendar.google.com/calendar/ical/dbot8s6eu5o91u6evdi4hucdr0%40group.calendar.google.com/public/basic.ics
 ラジオ|https://calendar.google.com/calendar/ical/f01lrnkgl42eqfbs1k97u7mrdc@group.calendar.google.com/public/basic.ics
 リリース|https://calendar.google.com/calendar/ical/oo8hkuk4udrflu06337hq42jqo@group.calendar.google.com/public/basic.ics
+握手会|https://calendar.google.com/calendar/ical/d7q626djcs2ooq8rkpoc045d5c%40group.calendar.google.com/public/basic.ics
 映画|https://calendar.google.com/calendar/ical/hbflgqvcrjvd9c1a07q5t93ork@group.calendar.google.com/public/basic.ics
 雑誌|https://calendar.google.com/calendar/ical/2veim8rg9o7k2js0jtng8i2dug@group.calendar.google.com/public/basic.ics
 新聞|https://calendar.google.com/calendar/ical/g3puqreu4a67quqqu7ueo58l5k@group.calendar.google.com/public/basic.ics

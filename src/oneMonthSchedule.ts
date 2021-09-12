@@ -45,7 +45,7 @@ export default class OneMonthSchedule {
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires,global-require,@typescript-eslint/no-unsafe-assignment
     const { fetchUrl } = require('./fetchUrl');
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-return
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-return,@typescript-eslint/return-await
     return await fetchUrl(customUrl);
   }
 
