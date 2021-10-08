@@ -22,7 +22,9 @@ export default class OneMonthSchedule {
 
     const scheduleJson = await OneMonthSchedule.getScheduleJson(customUrl);
 
-    const scheduleList = JSON.parse(scheduleJson) as ScheduleInterface[];
+    const scheduleList = OneMonthSchedule.normalizeSchedule(
+      JSON.parse(scheduleJson) as ScheduleInterface[]
+    );
 
     console.info(`${date.format('YYYY年MM月')}分の予定を更新します`);
     OneMonthSchedule.delete1MonthCalendarEvents(date, siteCalendarIds);
@@ -117,5 +119,19 @@ export default class OneMonthSchedule {
         'YYYY年MM月'
       )}分時点のカレンダー作成回数: ${counter.getCreateEventCallCount()}`
     );
+  }
+
+  /**
+   *
+   * @param {ScheduleInterface[]} scheduleList
+   * @returns {{date: string, description?: string, startTime?: string, endTime: string | undefined, title: string, type: string}[]}
+   */
+  private static normalizeSchedule(scheduleList: ScheduleInterface[]) {
+    return scheduleList.map((schedule) => {
+      const endTime = dayjs(schedule.startTime).isAfter(dayjs(schedule.endTime))
+        ? undefined
+        : schedule.endTime;
+      return { ...schedule, endTime };
+    });
   }
 }
