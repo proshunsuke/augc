@@ -119,4 +119,72 @@ describe('setSchedule', () => {
     );
     expect(UrlFetchApp.fetch).not.toBeCalled();
   });
+  it('スケジュールのデータが開始日時が終了日時よりも後ろにある場合に終了日時は消されること', async () => {
+    const scheduleJson =
+      '[{"title":"欅坂46 こちら有楽町星空放送局","start":"2019-12-01","end":"2019-11-30","className":"media","description":"欅坂46 こちら有楽町星空放送局"}]';
+    UrlFetchApp.fetch = jest.fn(() => ({
+      getContentText: jest.fn(() => scheduleJson),
+    })) as jest.Mock;
+
+    const calendarEventMock = jest.fn(() => ({
+      deleteEvent: jest.fn().mockReturnThis(),
+    }));
+
+    CalendarApp.getCalendarById = jest.fn(() => ({
+      getEventsForDay: jest.fn(() => [calendarEventMock()]),
+    })) as jest.Mock;
+
+    const date = dayjs('2019-12-01');
+    await expect(
+      OneMonthSchedule.setSchedule(
+        date,
+        getKeyakiCalendarUrl,
+        keyakiCalendarIds
+      )
+    ).resolves.not.toThrow();
+    expect(Calendar.createEvent).toBeCalledWith(
+      {
+        className: 'media',
+        description: '欅坂46 こちら有楽町星空放送局',
+        end: '2019-11-30',
+        endTime: undefined,
+        start: '2019-12-01',
+        title: '欅坂46 こちら有楽町星空放送局',
+      },
+      [
+        {
+          calendarId: 'jdnc8uf21242be7qjm5nmj7uok@group.calendar.google.com',
+          type: 'shakehands',
+        },
+        {
+          calendarId: 'eh0boh68ai7r2v15m38k2ms1lg@group.calendar.google.com',
+          type: 'event',
+        },
+        {
+          calendarId: '8l4srrnd9c6vge51k6cclsdsmc@group.calendar.google.com',
+          type: 'goods',
+        },
+        {
+          calendarId: '8tc88j0j9gmr95qa81r8t2210c@group.calendar.google.com',
+          type: 'release',
+        },
+        {
+          calendarId: 'f4bcp8sqv66sugk9m06gb1ioeg@group.calendar.google.com',
+          type: 'ticket',
+        },
+        {
+          calendarId: '9beck0tqd2096b3b5utkh0jg8g@group.calendar.google.com',
+          type: 'media',
+        },
+        {
+          calendarId: 'lihum5fsldhsspa3r8altr01ns@group.calendar.google.com',
+          type: 'birthday',
+        },
+        {
+          calendarId: 'efhfvac7iii073suf8v16tlmic@group.calendar.google.com',
+          type: 'other',
+        },
+      ]
+    );
+  });
 });
