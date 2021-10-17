@@ -4,15 +4,31 @@ import Trigger, { TERMINATION_MINUTES } from '../lib/trigger';
 import { SiteCalendarInterface } from '../calendarInterface';
 
 export interface SiteScheduleInterface {
-  setSiteSchedule(startDate: dayjs.Dayjs): Promise<void>;
+  setSiteSchedule(
+    startDate: dayjs.Dayjs,
+    nextSiteSchedule?: SiteScheduleInterface
+  ): Promise<boolean>;
+
   siteCalendarUrl(): string;
+
   siteCalendarIds(): SiteCalendarInterface[];
+
   siteName(): string;
 }
 
 export default abstract class SiteSchedule implements SiteScheduleInterface {
-  async setSiteSchedule(startDate: dayjs.Dayjs): Promise<void> {
-    if (!this.doesExecute()) return;
+  /**
+   * スケジュール登録をした場合はtrue, しなかった場合はfalseを返す
+   *
+   * @param {dayjs.Dayjs} startDate
+   * @param nextSiteSchedule
+   * @returns {Promise<boolean>}
+   */
+  async setSiteSchedule(
+    startDate: dayjs.Dayjs,
+    nextSiteSchedule?: SiteScheduleInterface
+  ): Promise<boolean> {
+    if (!this.doesExecute()) return false;
     console.info(`${this.siteName()}の予定を更新します`);
     const beginningOfNexYearMonth = dayjs().startOf('month').add(1, 'year');
     let targetBeginningOfMonth = SiteSchedule.getTargetBeginningOfMonth();
@@ -32,12 +48,26 @@ export default abstract class SiteSchedule implements SiteScheduleInterface {
             'YYYY-MM-DD'
           )}, 次実行するサイト: ${this.siteName()}`
         );
-        return;
+        return true;
       }
     }
+
+    if (nextSiteSchedule) {
+      const thisMonth = dayjs().startOf('month');
+      Trigger.setTrigger(thisMonth, nextSiteSchedule.siteName());
+      console.info(
+        `${this.siteName()}の全てのスケジュール作成が完了したので次のトリガーをセットして終了します。次実行開始する月: ${thisMonth.format(
+          'YYYY-MM-DD'
+        )}, 次実行するサイト: ${nextSiteSchedule.siteName()}`
+      );
+      return true;
+    }
+
     Trigger.deleteTargetDateProperty();
     Trigger.deleteTargetSiteNameProperty();
     Trigger.deleteTriggers();
+
+    return true;
   }
 
   /**
