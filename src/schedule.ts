@@ -9,8 +9,13 @@ export default class Schedule {
       new KeyakiSiteSchedule(),
       new SakuraSiteSchedule(),
     ];
-    for await (const siteSchedule of siteScheduleList) {
-      await siteSchedule.setSiteSchedule(startDate);
+    for (let i = 0; i < siteScheduleList.length; i++) {
+      const executed = await siteScheduleList[i].setSiteSchedule(
+        startDate,
+        siteScheduleList[i + 1]
+      );
+      // スケジュール登録をした場合は即終了。しなかった場合は既に登録済みなので次のサイトのスケジュール登録に進む
+      if (executed) return;
     }
   }
 }

@@ -12,14 +12,14 @@ describe('setSchedule', (): void => {
     jest.spyOn(console, 'info').mockImplementation();
     jest.resetAllMocks();
   });
-  it('setScheduleが24回呼ばれ各サイト1年分の予定が作成されること', async () => {
+  it('サイトの1年分のスケジュールが登録された場合は次のスケジュール登録は実行されずsetScheduleは12回実行されること', async () => {
     await Schedule.setSchedule(dayjs());
-    expect(OneMonthSchedule.setSchedule).toBeCalledTimes(24);
+    expect(OneMonthSchedule.setSchedule).toBeCalledTimes(12);
   });
   it('propertiesに日付がセットされていた場合にその日付からスケジュール登録が始まること', async () => {
     Trigger.getTargetDateProperty = jest.fn().mockReturnValueOnce('2020-01-01');
     await Schedule.setSchedule(dayjs());
-    expect(OneMonthSchedule.setSchedule).toBeCalledTimes(23);
+    expect(OneMonthSchedule.setSchedule).toBeCalledTimes(11);
   });
   it('propertiesにサイト名がセットされていた場合にそのサイトからスケジュール登録が始まること', async () => {
     Trigger.getTargetSiteNameProperty = jest
@@ -35,18 +35,23 @@ describe('setSchedule', (): void => {
       .mockReturnValue(true);
     Trigger.setTrigger = jest.fn().mockReturnThis();
     await Schedule.setSchedule(dayjs());
-    expect(OneMonthSchedule.setSchedule).toBeCalledTimes(3);
-    expect(Trigger.setTrigger).toBeCalledTimes(2);
+    expect(OneMonthSchedule.setSchedule).toBeCalledTimes(2);
+    expect(Trigger.setTrigger).toBeCalledTimes(1);
   });
-  it('指定時間内に全て実行出来たらdeleteTargetDatePropertyとdeleteTriggersが呼ばれること', async () => {
+  it('次にスケジュール登録するサイトが存在しない場合にdeleteTargetDatePropertyとdeleteTriggersが呼ばれること', async () => {
     Trigger.hasExceededTerminationMinutes = jest.fn().mockReturnValue(false);
     Trigger.setTrigger = jest.fn().mockReturnThis();
     Trigger.deleteTargetDateProperty = jest.fn().mockReturnThis();
+    Trigger.deleteTargetSiteNameProperty = jest.fn().mockReturnThis();
     Trigger.deleteTriggers = jest.fn().mockReturnThis();
+    Trigger.getTargetSiteNameProperty = jest
+      .fn()
+      .mockReturnValueOnce('sakurazaka');
     await Schedule.setSchedule(dayjs());
-    expect(OneMonthSchedule.setSchedule).toBeCalledTimes(24);
+    expect(OneMonthSchedule.setSchedule).toBeCalledTimes(12);
     expect(Trigger.setTrigger).not.toBeCalled();
-    expect(Trigger.deleteTargetDateProperty).toBeCalledTimes(2);
-    expect(Trigger.deleteTriggers).toBeCalledTimes(2);
+    expect(Trigger.deleteTargetDateProperty).toBeCalledTimes(1);
+    expect(Trigger.deleteTargetSiteNameProperty).toBeCalledTimes(1);
+    expect(Trigger.deleteTriggers).toBeCalledTimes(1);
   });
 });
