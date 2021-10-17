@@ -53,6 +53,7 @@ export default class Trigger {
    * @returns {string | null}
    */
   static getTargetSiteNameProperty(): string | null {
+    if (process.env.SITE_NAME) return process.env.SITE_NAME;
     if (process.env.ENV !== 'production') return null;
     const properties = PropertiesService.getScriptProperties();
     return properties.getProperty(TARGET_SITE_NAME_KEY);

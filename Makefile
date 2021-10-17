@@ -1,3 +1,5 @@
+SITE_NAME=keyakizaka
+
 setup:
 	$(MAKE) yarn/install
 
@@ -26,7 +28,7 @@ run:
 	yarn clasp run execute
 
 run/local:
-	node -e 'require("./dist/index.js");global.setSchedule();'
+	SITE_NAME=$(SITE_NAME) node -e 'require("./dist/index.js");global.setSchedule();'
 
 open:
 	yarn clasp open
