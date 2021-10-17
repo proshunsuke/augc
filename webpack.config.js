@@ -12,7 +12,8 @@ const babelLoader = {
 const plugins = [
     new GasPlugin(),
     new webpack.EnvironmentPlugin({
-        ENV: process.env.ENV || 'production'
+        ENV: process.env.ENV || 'production',
+        SITE_NAME: process.env.SITE_NAME || '',
     })
 ];
 
