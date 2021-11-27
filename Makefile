@@ -10,7 +10,7 @@ build: install
 	ENV=production yarn webpack
 
 watch:
-	ENV=local yarn webpack watch
+	SITE_NAME=$(SITE_NAME) ENV=local yarn webpack watch
 
 server/keyaki:
 	yarn run functions-framework --target=getKeyakiSchedule --source=./gcpFunctions/getKeyakiSchedule --port 8080
@@ -28,7 +28,7 @@ run:
 	yarn clasp run execute
 
 run/local:
-	SITE_NAME=$(SITE_NAME) node -e 'require("./dist/index.js");global.setSchedule();'
+	node -e 'require("./dist/index.js");global.setSchedule();'
 
 open:
 	yarn clasp open
