@@ -56,6 +56,7 @@ describe('deleteEvent', (): void => {
     const calendarEventMock: jest.Mock = jest.fn(() => ({
       deleteEvent: deleteEventMock,
     }));
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     Calendar.deleteEvent(calendarEventMock());
     expect(deleteEventMock).toBeCalledTimes(1);
   });
@@ -67,6 +68,7 @@ describe('deleteEvent', (): void => {
     const calendarEventMock: jest.Mock = jest.fn(() => ({
       deleteEvent: deleteEventMock,
     }));
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     Calendar.deleteEvent(calendarEventMock());
     expect(Utilities.sleep).not.toBeCalled();
   });
