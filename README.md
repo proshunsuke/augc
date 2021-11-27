@@ -43,6 +43,7 @@ Auto Updating Google Calendar using google apps script
 ---|---
 アルバム|https://calendar.google.com/calendar/ical/0ivcdulcqpm0majeaqo0f1bml8@group.calendar.google.com/public/basic.ics
 イベント|https://calendar.google.com/calendar/ical/ulksj6q2hr6hvvre7jqk2rghe4@group.calendar.google.com/public/basic.ics
+グッズ|https://calendar.google.com/calendar/ical/9p6fqjmf2s1k6ci1clmou1l7bg%40group.calendar.google.com/public/basic.ics
 シングル|https://calendar.google.com/calendar/ical/rf2qon3acq2g8fj1iuvngmp7tg@group.calendar.google.com/public/basic.ics
 その他|https://calendar.google.com/calendar/ical/06ol8jcjk0r5bviarevjicta70@group.calendar.google.com/public/basic.ics
 テレビ|https://calendar.google.com/calendar/ical/14elrf80nstbrahsfe2iuem8fg@group.calendar.google.com/public/basic.ics
